@@ -36,27 +36,27 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 					echo "<script>alert('votre image ne doit pas dépasser 5 mb');</script>";
 				}
 				else{
-					
-					$target="img-profile/".$imageName;
+					$imageNewName = uniqid('',true).".".$imgActExt;
+					$target="img-profile/".$imageNewName;
 					move_uploaded_file($imageTmpName,$target);
 					$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
 
 					if($_SESSION['role']=="Admin"){
 						
-						$req="insert into admin values('','$nom','$prenom','$email','$imageName','$id')";
+						$req="insert into admin values('','$nom','$prenom','$email','$imageNewName','$id')";
 						$result=mysqli_query($cnx,$req);
 						header('Location: index.php');
 
 					}
 					else if($_SESSION['role']=="Prof"){
 						
-						$req="insert into professeur values('','$nom','$prenom','$email','$imageName','$id')";
+						$req="insert into professeur values('','$nom','$prenom','$email','$imageNewName','$id')";
 						$result=mysqli_query($cnx,$req);
 						header('Location: index.php');
 					}
 					else if($_SESSION['role']=="Etud"){
 						
-						$req="insert into etudiant values('','$nom','$prenom','$email','$imageName','$id','$class')";
+						$req="insert into etudiant values('','$nom','$prenom','$email','$imageNewName','$id','$class')";
 						$result=mysqli_query($cnx,$req);
 						header('Location: index.php');
 							}

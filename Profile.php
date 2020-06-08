@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <?php 
+
   if(!isset($_SESSION)){
     session_start();
   }
@@ -14,7 +15,7 @@
    ?>
     <meta charset="utf-8">
 
-    <title>E-EMSI | Profile edit</title>
+    <title>E-EMSI | Profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -29,7 +30,7 @@
 <body>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
-<div class="container">
+<div class="container" >
 
   <!--Requete-->
 <?php
@@ -195,18 +196,7 @@
         </div>
       </div>
 
-      <div class="col-12 col-md-3 mb-3">
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="px-xl-3">
-              <button class="btn btn-block btn-secondary">
-                <i class="fa fa-sign-out"></i>
-                <span><a  href="logout.php" style="color: white; text-decoration: none;">Logout</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
 
   </div>

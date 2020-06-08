@@ -69,12 +69,12 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 							include ("Profile.php");
 							echo "<script>alert('votre image ne doit pas dépasser 5 mb');</script>";
 						}else{
-							
-							$target="img-profile/".$imageName;
+							$imageNewName = uniqid('',true).".".$imgActExt;
+							$target="img-profile/".$imageNewName;
 							move_uploaded_file($imageTmpName,$target);
 							
 								$id_user=$row['ID_Admin'];
-								$req="UPDATE admin SET Nom = '$nom', Prenom = '$prenom', Email = '$email',Photo = '$imageName' WHERE ID_Admin = '$id_user'";
+								$req="UPDATE admin SET Nom = '$nom', Prenom = '$prenom', Email = '$email',Photo = '$imageNewName' WHERE ID_Admin = '$id_user'";
 								$result=mysqli_query($cnx,$req);
 								if($result){
 									header('Location: Profile.php');
@@ -110,12 +110,12 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 							include ("Profile.php");
 							echo "<script>alert('votre image ne doit pas dépasser 5 mb');</script>";
 						}else{
-							
-							$target="img-profile/".$imageName;
+							$imageNewName = uniqid('',true).".".$imgActExt;
+							$target="img-profile/".$imageNewName;
 							move_uploaded_file($imageTmpName,$target);
 							
 								$id_user=$row['ID_Prof'];
-								$req="UPDATE professeur SET Nom = '$nom', Prenom = '$prenom', Email = '$email',Photo = '$imageName' WHERE ID_Prof = '$id_user'";
+								$req="UPDATE professeur SET Nom = '$nom', Prenom = '$prenom', Email = '$email',Photo = '$imageNewName' WHERE ID_Prof = '$id_user'";
 								$result=mysqli_query($cnx,$req);
 								if($result){
 									header('Location: Profile.php');
@@ -151,12 +151,12 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 							include ("Profile.php");
 							echo "<script>alert('votre image ne doit pas dépasser 5 mb');</script>";
 						}else{
-							
-							$target="img-profile/".$imageName;
+							$imageNewName = uniqid('',true).".".$imgActExt;
+							$target="img-profile/".$imageNewName;
 							move_uploaded_file($imageTmpName,$target);
 							
 								$id_user=$row['ID_Etud'];
-								$req="UPDATE etudiant SET Nom = '$nom', Prenom = '$prenom', Email = '$email',Photo = '$imageName' WHERE ID_Etud = '$id_user'";
+								$req="UPDATE etudiant SET Nom = '$nom', Prenom = '$prenom', Email = '$email',Photo = '$imageNewName' WHERE ID_Etud = '$id_user'";
 								$result=mysqli_query($cnx,$req);
 								if($result){
 									header('Location: Profile.php');

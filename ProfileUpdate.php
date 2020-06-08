@@ -59,13 +59,13 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 					include ("Profile.php");
 					echo "<script>alert('votre image ne doit pas dépasser 5 mb');</script>";
 				}else{
-					
-					$target="img-profile/".$imageName;
+					$imageNewName = uniqid('',true).".".$imgActExt;
+					$target="img-profile/".$imageNewName;
 					move_uploaded_file($imageTmpName,$target);
 					$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
 					if($_SESSION['role']=="Admin"){
 						
-						$req="UPDATE admin SET Photo = '$imageName' WHERE ID_Admin = '$id'";
+						$req="UPDATE admin SET Photo = '$imageNewName' WHERE ID_Admin = '$id'";
 						$result=mysqli_query($cnx,$req);
 						if(!$result){
 							echo "<script>document.getElementById('SuccesMsg').style.display='block';</script>";
@@ -84,7 +84,7 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 					}
 					else if($_SESSION['role']=="Prof"){
 						
-						$req="UPDATE professeur SET Photo = '$imageName' WHERE ID_Prof = '$id'";
+						$req="UPDATE professeur SET Photo = '$imageNewName' WHERE ID_Prof = '$id'";
 						$result=mysqli_query($cnx,$req);
 						if(!$result){
 							echo "<script>document.getElementById('SuccesMsg').style.display='block';</script>";
@@ -102,7 +102,7 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 					}
 					else if($_SESSION['role']=="Etud"){
 						
-						$req="UPDATE etudiant SET Photo = '$imageName' WHERE ID_Etud = '$id'";
+						$req="UPDATE etudiant SET Photo = '$imageNewName' WHERE ID_Etud = '$id'";
 						$result=mysqli_query($cnx,$req);
 						if(!$result){
 							echo "<script>document.getElementById('SuccesMsg').style.display='block';</script>";

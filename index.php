@@ -77,12 +77,6 @@ else{
 		            <a href="#"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
 		          </li>
 		          <li>
-		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
-		          </li>
-		          <li>
-		            <a href="#"><span class="fa fa-file mr-3"></span> Files</a>
-		          </li>
-		          <li>
 		            <a href="#"><span class="fa fa-bars mr-3"></span> Matiére</a>
 		          </li>
 		          <li>
@@ -92,7 +86,10 @@ else{
 		            <a href="CrudEtud.php"><span class="fa fa-address-book-o mr-3"></span> Crud Etudiant</a>
 		          </li>
 		          <li>
-		            <a href="#"><span class="fa fa-files-o mr-3"></span> Crud Files</a>
+		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Crud Fichier</a>
+		          </li>
+		          <li>
+		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
 		          </li>
 		          <li>
 		            <a href="logout.php"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
@@ -106,13 +103,13 @@ else{
 		            <a href="#"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
 		          </li>
 		          <li>
-		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
-		          </li>
-		          <li>
 		            <a href="#"><span class="fa fa-bars mr-3"></span> Matiére</a>
 		          </li>
 		          <li>
-		            <a href="#"><span class="fa fa-files-o mr-3"></span> Crud Files</a>
+		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Mes Fichier</a>
+		          </li>
+		          <li>
+		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
 		          </li>
 		          <li>
 		            <a href="logout.php"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
@@ -127,10 +124,10 @@ else{
 		            <a href="#"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
 		          </li>
 		          <li>
-		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
+		            <a href="#"><span class="fa fa-bars mr-3"></span> Matiére</a>
 		          </li>
 		          <li>
-		            <a href="#"><span class="fa fa-bars mr-3"></span> Matiére</a>
+		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
 		          </li>
 		          <li>
 		            <a href="logout.php"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
@@ -145,13 +142,10 @@ else{
 
     	</nav>
 
-        <!-- Page Content  -->
+        <!-- Page Content 
       <div id="content" class="p-4 p-md-5 pt-5">
-        <h2 class="mb-4">E-EMSI</h2>
-        <p>Avec le préfixe « e » pour web, numérique, ou cyber et « learning » pour apprentissage, le e-learning, signifie littéralement : formation sur internet.Nouvelle forme d’apprentissage, le e-learning tire son attrait du fait de pouvoir apprendre à son rythme, sur son ordinateur, des contenus pédagogiques sur des sujets variés. Organisée en sessions ou modules, avec tests d’évaluations, la formation peut-être totalement autogérée et suivie via un tableau de bord qui répertorie chacune des avancées du participant.Pour se former les plateformes se structurent autour de vidéos, d’animations, de textes, et de tests en tout genre.Le but : obtenir pour certaines formations, un certificat d’aptitudes ou de connaissances, mais surtout améliorer son capital connaissance dans un domaine précis.Point positif, les évaluations peuvent être refaites jusqu’à ce que l’exercice soit réussi ou totalement maîtrisé.</p>
         
-        <p>Un suivi pas à pas des différentes étapes.Des contrôles de connaissances et une auto-évaluation.Une façon ludique et pédagogique de se former à différentes matières.Un interlocuteur joignable par mail en cas de questions.Un apprentissage à son rythme en fonction de ses disponibilités.</p>
-      </div>
+      </div> -->
 		</div>
 
     <script src="js/jqueryMenu.min.js"></script>

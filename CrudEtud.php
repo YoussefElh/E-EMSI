@@ -306,12 +306,7 @@ $(document).ready(function(){
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-						<th>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="selectAll">
-								<label for="selectAll"></label>
-							</span>
-						</th>
+						<th> </th>
 						<th>ID User</th>
 						<th>Login</th>
                         <th>Nom Complet</th>
@@ -323,12 +318,7 @@ $(document).ready(function(){
                 <tbody>
                 	<?php while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){ ?>
                     <tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox1" name="options[]" value="1">
-								<label for="checkbox1"></label>
-							</span>
-						</td>
+						<td> </td>
 						<td><?php echo  $tab["ID_User"] ?></td>
 						<td><?php echo  $tab["Login"] ?></td>
                         <td><?php echo  $tab["Nom"] ?> <?php echo  $tab["Prenom"] ?></td>

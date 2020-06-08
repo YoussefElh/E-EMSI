@@ -4,11 +4,13 @@
 $retour['debug']=$_GET;
 $_POST=array_merge($_POST,$_GET);
 $retour['debug']=$_POST;*/
-
+  if(!isset($_SESSION)){
+    session_start();
+}
 if(isset($_POST['login'])&&!empty($_POST['login'])&&isset($_POST['passwd'])&&!empty($_POST['passwd'])){
 
 	
-	session_start();
+
 	$email=$_POST["login"];
 	$password=$_POST["passwd"];
 	$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
