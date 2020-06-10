@@ -21,6 +21,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/styleMenu.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -102,13 +103,12 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
     }
 	table.table td a {
 		font-weight: bold;
-		color: #566787;
 		display: inline-block;
 		text-decoration: none;
 		outline: none !important;
 	}
 	table.table td a:hover {
-		color: #2196F3;
+		color: white;
 	}
 	table.table td a.edit {
         color: #FFC107;
@@ -244,12 +244,134 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 	.modal form label {
 		font-weight: normal;
 	}	
+	.my-custom-scrollbar {
+		position: relative;
+		height: 500px;
+		overflow: auto;
+		}
+		.table-wrapper-scroll-y {
+		display: block;
+		}
 </style>
 
 </head>
 <body>
-    <div class="container">
+	<?php
+        if($_SESSION['role']=="Admin"){
+            $id=$_SESSION['idu'];
+            $req="select * from user s,admin a where s.ID_User=a.FK_ID_USER and s.ID_User='$id'";
+            $cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+            $result=mysqli_query($cnx,$req);
+            $row=mysqli_fetch_array($result);
 
+            //while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+        }
+        else if($_SESSION['role']=="Prof"){
+            $id=$_SESSION['idu'];
+            $req="select * from user s,professeur p where s.ID_User=p.FK_ID_USER and s.ID_User='$id'";
+            $cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+            $result=mysqli_query($cnx,$req);
+            $row=mysqli_fetch_array($result);
+        }
+        else if($_SESSION['role']=="Etud"){
+            $id=$_SESSION['idu'];
+            $req="select * from user s,etudiant e where s.ID_User=e.FK_ID_USER and s.ID_User='$id'";
+            $cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+            $result=mysqli_query($cnx,$req);
+            $row=mysqli_fetch_array($result);
+
+        }
+        
+?>
+		
+<div class="wrapper d-flex align-items-stretch">
+			<nav id="sidebar">
+				<div class="custom-menu">
+					<button type="button" id="sidebarCollapse" class="btn btn-primary">
+	        </button>
+        </div>
+	  		<div class="img bg-wrap text-center py-4" style="background-image: url(images/logoPaysage.jpg);">
+	  			<div class="user-logo">
+	  				<div class="img" style="background-image: url(img-profile/<?php $photo=$row["Photo"]; echo "$photo"?>);"></div>
+	  				<h3><?php echo $row['Nom']?> <?php echo $row['Prenom']?></h3>
+	  			</div>
+	  		</div>
+        <ul class="list-unstyled components mb-5">
+          <li >
+            <a href="index.php"><span class="fa fa-home mr-3"></span> Home</a>
+          </li>
+          
+          <?php if($_SESSION['role']=="Admin"){
+			echo '<li>
+		            <a href="#"><span class="fa fa-book mr-3"></span> Cours</a>
+		          </li>
+		          <li >
+		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
+		          </li>
+		          <li>
+		            <a href="CrudProf.php"><span class="fa fa-address-book-o mr-3"></span> Crud Professeur</a>
+		          </li>
+		          <li >
+		            <a href="CrudEtud.php"><span class="fa fa-address-book-o mr-3"></span> Crud Etudiant</a>
+		          </li>
+		          <li class="active">
+		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Crud Fichier</a>
+		          </li>
+		          <li>
+		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
+		          </li>
+		          <li>
+		            <a href="logout.php"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
+		          </li>
+		        </ul>'; }
+		       else if($_SESSION['role']=="Prof"){
+		       		echo '<li>
+		            <a href="#"><span class="fa fa-book mr-3"></span> Cours</a>
+		          </li>
+		          <li>
+		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
+		          </li>
+		          <li class="active">
+		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Mes Fichier</a>
+		          </li>
+		          <li>
+		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
+		          </li>
+		          <li>
+		            <a href="logout.php"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
+		          </li>
+		        </ul>';
+		       			}
+		       		else if($_SESSION['role']=="Etud"){
+		       		echo '<li>
+		            <a href="#"><span class="fa fa-book mr-3"></span> Cours</a>
+		          </li>
+		          <li>
+		            <a href="#"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
+		          </li>
+		          <li>
+		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
+		          </li>
+		          <li>
+		            <a href="logout.php"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
+		          </li>
+		        </ul>';
+		       			}
+
+
+
+			?>
+          
+
+    	</nav>
+
+        <!-- Page Content -->
+<div id="content" class="p-4 p-md-5 pt-5">
+			
+    <div class="container">
+    	<div class="alert alert-warning" role="alert">
+			  Pour ne pas perdre vos <strong>fichier</strong> veuiller les <strong>archiver</strong> avant de les uploader sur le site ! 
+			</div>
 <?php
             if($_SESSION['role']=="Admin"){
             	$req="SELECT * FROM file f,professeur p where p.ID_Prof=f.FK_ID_PROF";
@@ -258,11 +380,15 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
         	}
         	else if($_SESSION['role']=="Prof"){
         	$id=$_SESSION['idu'];
-        		$req="SELECT * FROM file f,professeur p,user s where p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
+        		$req="SELECT * FROM file f,professeur p,user s,cours c where f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
 	            $cnx=mysqli_connect("127.0.0.1","root","","eemsi");
 	            $result=mysqli_query($cnx,$req);
+	            //select des cours dans dropdown par prof connecte
+	            $req2="SELECT * FROM cours c,professeur p,user s where c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER and s.ID_User='$id'";
+	            $result2=mysqli_query($cnx,$req2);
         	}
-            
+            	
+            	
         
 ?>
         <div class="table-wrapper">
@@ -280,6 +406,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 					
                 </div>
             </div>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" >
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -289,7 +416,11 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 						</th>
 						<th>ID File</th>
 						<th>Nom Fichier</th>
+						<th>Télécharger</th>
 						<th>Description</th>
+						<?php if($_SESSION['role']=="Prof"){
+                        echo '<th>Cours</th>';
+                        } ?>
                         <?php if($_SESSION['role']=="Admin"){
                         echo '<th>Uploader</th>';
                         } ?>
@@ -305,7 +436,12 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 						</td>
 						<td><?php echo  $tab["ID_File"] ?></td>
 						<td><?php echo  $tab["FileName"] ?></td>
+						<td><a href="DownloadFileForm.php?IDF=<?php echo $tab['ID_File'] ?>" class="btn btn-outline-success">Download</a></td>
                         <td><?php echo  $tab["Description"] ?></td>
+                        <?php if($_SESSION['role']=="Prof"){?>
+                        <td><?php echo  $tab["NomCours"] ?></td>
+                        <?php } ?>
+                        
                         <?php if($_SESSION['role']=="Admin"){?> 
                         <?php echo'<td>'?>
                         	<?php echo  $tab["Nom"]?> <?php echo $tab["Prenom"];?>
@@ -313,13 +449,13 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
                         <?php }?>
                         <td>
                             
-                            <a href="File_del_Form.php?IDF=<?php echo $tab["ID_File"]; ?>" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                            <a href="File_del_Form.php?IDF=<?php echo $tab["ID_File"]; ?>" class="btn btn-outline-danger">Supprimer</a>
                         </td>
                     </tr>
                 <?php }?>
                 </tbody>
             </table>
-
+        </div>
         </div>
     </div>
 	
@@ -332,15 +468,23 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 						<h4 class="modal-title">Ajouter un fichier</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
-					<div class="modal-body">					
+					<div class="modal-body" >					
 						<div class="form-group">
 							<label>Ajouter Le fichier du cours</label>
 							<input type="file" name="file" class="form-control" required>
 						</div>
 						<div class="form-group">
 							<label>Description</label>
-							<textarea name="description" rows="5" cols="40" placeholder="ici la description du fichier"></textarea>
-						</div>			
+							<textarea name="description" rows="5" cols="40" placeholder="ici la description oule nom du fichier"></textarea>
+						</div>
+						<div class="form-group">
+						<select name="idCours" class="browser-default custom-select custom-select-lg mb-3" required>
+						  <option value="" disabled selected>Choisir un cours</option>
+						<?php while($tab2=mysqli_fetch_array($result2,MYSQLI_ASSOC)){ ?>
+							  <option value="<?php echo  $tab2["ID_Cours"]; ?>"><?php echo  $tab2["NomCours"] ;?></option>
+						<?php }?>	
+						</select>
+						</div>	
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -350,62 +494,31 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 			</div>
 		</div>
 	</div>
-	<!-- Edit Modal HTML -->
-	<div id="editEmployeeModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form>
-					<div class="modal-header">						
-						<h4 class="modal-title">Modifier Fichier</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">					
-						<div class="form-group">
-							<label>Name</label>
-							<input type="text" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>Email</label>
-							<input type="email" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>Address</label>
-							<textarea class="form-control" required></textarea>
-						</div>
-						<div class="form-group">
-							<label>Phone</label>
-							<input type="text" class="form-control" required>
-						</div>					
-					</div>
-					<div class="modal-footer">
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input type="submit" class="btn btn-info" value="Save">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<!-- Delete Modal HTML -->
-	<div id="deleteEmployeeModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form  >
-					<div class="modal-header">						
-						<h4 class="modal-title">Supprimer Fichier</h4>
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					</div>
-					<div class="modal-body">					
-						<p>Voulez-vous vraimant supprimer ?</p>
-						<p class="text-warning"><small>Cette action ne peut pas être annulée!</small></p>
-					</div>
-					<div class="modal-footer">
-						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<a href=""  class="btn btn-danger" ><i>&#xE872;</i>Delete</a>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+  </div>
+</div>
 </body>
+  <!-- Footer -->
+<footer class="page-footer font-small blue" style="background-color: #a9ff70;">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="#"> eemsi.com</a>
+    BY<strong>  Youssef	Elhizabri</strong>
+    AND<strong>  Idriss Bacha</strong>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
 </html> 
+    <script src="js/jqueryMenu.min.js"></script>
+    <script src="js/popperMenu.js"></script>
+    <script src="js/bootstrapMenu.min.js"></script>
+    <script src="js/mainMenu.js"></script>
+    <script type="text/javascript">
+    	// Material Select Initialization
+		$(document).ready(function() {
+		$('.mdb-select').materialSelect();
+		});
+    </script>
 <?php } ?>

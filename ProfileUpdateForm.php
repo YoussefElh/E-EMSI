@@ -22,12 +22,14 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 		$imageSize=$_FILES["image"]["size"];
 		$imageError=$_FILES["image"]["error"];
 		$imageType=$_FILES["image"]["type"];
-		$maxSize=5000;
+		$maxSize=5000000;
 
 		$imgExt=explode(".", $imageName);
 		$imgActExt=strtolower(end($imgExt));
 		$allowed=array("jpg","jpeg","png");
 
+		$Time=time();
+		
 		$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
 		//select old info 
 		if($_SESSION['role']=="Admin"){
@@ -65,11 +67,11 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 				else if(isset($imageName)){
 				if(in_array($imgActExt, $allowed)){
 					if($imageError===0){
-						if($imageSize<$maxSize){
+						if($imageSize>$maxSize){
 							include ("Profile.php");
 							echo "<script>alert('votre image ne doit pas dépasser 5 mb');</script>";
 						}else{
-							$imageNewName = uniqid('',true).".".$imgActExt;
+							$imageNewName = $Time.".".$imgActExt;
 							$target="img-profile/".$imageNewName;
 							move_uploaded_file($imageTmpName,$target);
 							
@@ -106,11 +108,11 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 				else if(isset($imageName)){
 				if(in_array($imgActExt, $allowed)){
 					if($imageError===0){
-						if($imageSize<$maxSize){
+						if($imageSize>$maxSize){
 							include ("Profile.php");
 							echo "<script>alert('votre image ne doit pas dépasser 5 mb');</script>";
 						}else{
-							$imageNewName = uniqid('',true).".".$imgActExt;
+							$imageNewName = $Time.".".$imgActExt;
 							$target="img-profile/".$imageNewName;
 							move_uploaded_file($imageTmpName,$target);
 							
@@ -147,11 +149,11 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 				else if(isset($imageName)) {
 				if(in_array($imgActExt, $allowed)){
 					if($imageError===0){
-						if($imageSize<$maxSize){
+						if($imageSize>$maxSize){
 							include ("Profile.php");
 							echo "<script>alert('votre image ne doit pas dépasser 5 mb');</script>";
 						}else{
-							$imageNewName = uniqid('',true).".".$imgActExt;
+							$imageNewName = $Time.".".$imgActExt;
 							$target="img-profile/".$imageNewName;
 							move_uploaded_file($imageTmpName,$target);
 							

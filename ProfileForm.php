@@ -22,21 +22,22 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 		$imageSize=$_FILES["image"]["size"];
 		$imageError=$_FILES["image"]["error"];
 		$imageType=$_FILES["image"]["type"];
-		$maxSize=5000;
+		$maxSize=5000000;
 
 		$imgExt=explode(".", $imageName);
 		$imgActExt=strtolower(end($imgExt));
 		$allowed=array("jpg","jpeg","png");
 		
-
+		$Time=time();
+		
 		if(in_array($imgActExt, $allowed)){
 			if($imageError===0){
-				if($imageSize<$maxSize){
+				if($imageSize>$maxSize){
 					include ("ProfileComplete.php");
 					echo "<script>alert('votre image ne doit pas dépasser 5 mb');</script>";
 				}
 				else{
-					$imageNewName = uniqid('',true).".".$imgActExt;
+					$imageNewName = $Time.".".$imgActExt;
 					$target="img-profile/".$imageNewName;
 					move_uploaded_file($imageTmpName,$target);
 					$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
@@ -78,7 +79,7 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 				echo '<script>
 						swal({
 						  title: "Les champs sans vide?",
-						  text: "Vous devez compéter toutes les informations!",
+						  text: "Vous devez compléter toutes les informations!",
 						  icon: "warning",
 						  buttons: true,
 						  dangerMode: true,

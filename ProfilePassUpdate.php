@@ -40,8 +40,8 @@ if(isset($_POST['old_password'])&&!empty($_POST['old_password'])&&isset($_POST['
 						include ("Profile.php");
 						echo '<script>
 								swal({
-								  title: "Erreur !!!!!!!!!!!!!!!!",
-								  text: "Erreur !!!!!!!!!!!!!!!!",
+								  title: "Erreur !",
+								  text: "Vérifier vos infos!",
 								  icon: "warning",
 								  buttons: true,
 								  dangerMode: true,

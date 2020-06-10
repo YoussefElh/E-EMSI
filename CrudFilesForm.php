@@ -4,10 +4,11 @@
 }
 //info complet
 if(isset($_POST['Ajouter'])){	
-if(isset($_POST['description'])&&!empty($_POST['description'])){
+if(isset($_POST['description'])&&!empty($_POST['description'])&&isset($_POST['idCours'])&&!empty($_POST['idCours'])){
 
 
 		$desc=$_POST['description'];
+		$idCours=$_POST['idCours'];
 		$id=$_SESSION['idu'];
 		//select idprof
 		$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
@@ -22,27 +23,40 @@ if(isset($_POST['description'])&&!empty($_POST['description'])){
 		$imageSize=$_FILES["file"]["size"];
 		$imageError=$_FILES["file"]["error"];
 		$imageType=$_FILES["file"]["type"];
-		$maxSize=50000;
+		$maxSize=52428800;
 
 		$imgExt=explode(".", $fileName);
 		$imgActExt=strtolower(end($imgExt));
 		$allowed=array("jpg","jpeg","png","docx","pdf","pptx","xlsx","zip","rar","doc","txt");
-		$fileNewName = uniqid('',true).".".$imgActExt;
 
+		//$size=filesize('cours-files/'.$fileName);
+		//var_dump($size);
+		var_dump($fileName);
+		var_dump($imageTmpName);
+		var_dump($imageSize);
+		var_dump($imageError);
+		var_dump($imageType);
+		$Time=time();
 
 		if(in_array($imgActExt, $allowed)){
 			if($imageError===0){
-				if($imageSize<$maxSize){
+				if($imageSize>$maxSize){
 					include ("CrudFiles.php");
-					echo "<script>alert('votre image ne doit pas dépasser 50 mb');</script>";
-					
+					echo '<script>
+						swal({
+						  title: "Erreur !!",
+						  text: "Le fichier ne doit pas dépassez 50 Mb ! ",
+						  icon: "warning",
+						  buttons: true,
+						  dangerMode: true,
+						});</script>';
 				}
 				else{
-					$fileNewName = uniqid('',true).".".$imgActExt;
+					$fileNewName = str_replace(' ', '', $desc).$Time.".".$imgActExt;
+
 					$target="cours-files/".$fileNewName;
 					move_uploaded_file($imageTmpName,$target);
-					
-					$req="insert into file values('','$fileNewName','$desc','$idprof')";
+					$req="insert into file values('','$fileNewName','$desc','$idprof','$idCours')";
 					$result=mysqli_query($cnx,$req);
 					header('Location: CrudFiles.php');
 					
@@ -66,7 +80,7 @@ if(isset($_POST['description'])&&!empty($_POST['description'])){
 				echo '<script>
 						swal({
 						  title: "Les champs sans vide?",
-						  text: "Vous devez compéter toutes les informations!",
+						  text: "Vous devez compléter toutes les informations!",
 						  icon: "warning",
 						  buttons: true,
 						  dangerMode: true,

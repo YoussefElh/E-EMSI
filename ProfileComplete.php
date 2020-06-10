@@ -141,6 +141,19 @@
   swal("Compte créee!", "veuillez compléter vos informations", "success");
 </script>
 </body>
+  <!-- Footer -->
+<footer class="page-footer font-small blue" style="background-color: #a9ff70;">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="#"> eemsi.com</a>
+    BY<strong>  Youssef Elhizabri</strong>
+    AND<strong>  Idriss Bacha</strong>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
 </html>
 
 <?php } ?>

@@ -12,8 +12,22 @@ if(isset($_POST['login'])&&!empty($_POST['login'])&&isset($_POST['password'])&&!
 			if($cnfpass==$password){
 				$req="insert into user values('','$login','$password','$role')";
 				$result=mysqli_query($cnx,$req);
-				header('Location: ProfileComplete.php');
-				echo "<script>document.getElementById('ConfMsg').style.display='none';</script>";
+				if($result){
+					header('Location: ProfileComplete.php');
+				//echo "<script>document.getElementById('ConfMsg').style.display='none';</script>";
+				}
+				else{
+					 include ("registration.html");
+       					echo '<script>
+						swal({
+						  title: "Erreur !",
+						  text: "Vérifiez vos informations!",
+						  icon: "warning",
+						  buttons: true,
+						  dangerMode: true,
+						});</script>';
+				}
+				
 			}
 			else{
 				include ("registration.html");
@@ -23,6 +37,14 @@ if(isset($_POST['login'])&&!empty($_POST['login'])&&isset($_POST['password'])&&!
 	}
 }
 else{
-        //$retour['error']="Error";
+        include ("registration.html");
+       echo '<script>
+						swal({
+						  title: "Les champs sans vide?",
+						  text: "Vous devez compléter toutes les informations!",
+						  icon: "warning",
+						  buttons: true,
+						  dangerMode: true,
+						});</script>';
 }
 ?>

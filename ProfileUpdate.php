@@ -19,12 +19,13 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 		$imageSize=$_FILES["image"]["size"];
 		$imageError=$_FILES["image"]["error"];
 		$imageType=$_FILES["image"]["type"];
-		$maxSize=5000;
+		$maxSize=5000000;
 
 		$imgExt=explode(".", $imageName);
 		$imgActExt=strtolower(end($imgExt));
 		$allowed=array("jpg","jpeg","png");
 
+		$Time=time();
 		//select old info 
 		/*if($_SESSION['role']=="Admin"){
 			
@@ -55,11 +56,11 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 	if(isset($imageName)){
 		if(in_array($imgActExt, $allowed)){
 			if($imageError===0){
-				if($imageSize<$maxSize){
+				if($imageSize>$maxSize){
 					include ("Profile.php");
 					echo "<script>alert('votre image ne doit pas dépasser 5 mb');</script>";
 				}else{
-					$imageNewName = uniqid('',true).".".$imgActExt;
+					$imageNewName = $Time.".".$imgActExt;
 					$target="img-profile/".$imageNewName;
 					move_uploaded_file($imageTmpName,$target);
 					$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
@@ -67,14 +68,14 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 						
 						$req="UPDATE admin SET Photo = '$imageNewName' WHERE ID_Admin = '$id'";
 						$result=mysqli_query($cnx,$req);
-						if(!$result){
-							echo "<script>document.getElementById('SuccesMsg').style.display='block';</script>";
+						if($result){
+							header('Location: Profile.php?ProfileModifié');
 						}else{
 							include ("Profile.php");
 							echo '<script>
 									swal({
-									  title: "Les champs sans vide?",
-									  text: "Vous devez compéter toutes les informations!",
+									  title: "Erreur !",
+									  text: "Vérifier vos infos!",
 									  icon: "warning",
 									  buttons: true,
 									  dangerMode: true,
@@ -86,14 +87,14 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 						
 						$req="UPDATE professeur SET Photo = '$imageNewName' WHERE ID_Prof = '$id'";
 						$result=mysqli_query($cnx,$req);
-						if(!$result){
-							echo "<script>document.getElementById('SuccesMsg').style.display='block';</script>";
+						if($result){
+							header('Location: Profile.php?ProfileModifié');
 						}else{
 							include ("Profile.php");
 							echo '<script>
 									swal({
-									  title: "Les champs sans vide?",
-									  text: "Vous devez compéter toutes les informations!",
+									  title: "Erreur !",
+									  text: "Vérifier vos infos!",
 									  icon: "warning",
 									  buttons: true,
 									  dangerMode: true,
@@ -104,14 +105,14 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 						
 						$req="UPDATE etudiant SET Photo = '$imageNewName' WHERE ID_Etud = '$id'";
 						$result=mysqli_query($cnx,$req);
-						if(!$result){
-							echo "<script>document.getElementById('SuccesMsg').style.display='block';</script>";
+						if($result){
+							header('Location: Profile.php?ProfileModifié');
 						}else{
 							include ("Profile.php");
 							echo '<script>
 									swal({
-									  title: "Les champs sans vide?",
-									  text: "Vous devez compéter toutes les informations!",
+									  title: "Erreur !",
+									  text: "Vérifier vos infos!",
 									  icon: "warning",
 									  buttons: true,
 									  dangerMode: true,
@@ -134,14 +135,14 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 				
 				$req="UPDATE admin SET Nom = '$nom', Prenom = '$prenom', Email = '$email' WHERE ID_Admin = '$id'";
 				$result=mysqli_query($cnx,$req);
-				if(!$result){
-					echo "<script>document.getElementById('SuccesMsg').style.display='block';</script>";
+				if($result){
+					header('Location: Profile.php?ProfileModifié');
 				}else{
 					include ("Profile.php");
 					echo '<script>
 							swal({
-							  title: "Les champs sans vide?",
-							  text: "Vous devez compéter toutes les informations!",
+							  title: "Erreur !",
+								text: "Vérifier vos infos!",
 							  icon: "warning",
 							  buttons: true,
 							  dangerMode: true,
@@ -153,14 +154,14 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 				
 				$req="UPDATE professeur SET Nom = '$nom', Prenom = '$prenom', Email = '$email' WHERE ID_Prof = '$id'";
 				$result=mysqli_query($cnx,$req);
-				if(!$result){
-					echo "<script>document.getElementById('SuccesMsg').style.display='block';</script>";
+				if($result){
+					header('Location: Profile.php?ProfileModifié');
 				}else{
 					include ("Profile.php");
 					echo '<script>
 							swal({
-							  title: "Les champs sans vide?",
-							  text: "Vous devez compéter toutes les informations!",
+							  title: "Erreur !",
+									  text: "Vérifier vos infos!",
 							  icon: "warning",
 							  buttons: true,
 							  dangerMode: true,
@@ -171,14 +172,14 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 				
 				$req="UPDATE etudiant SET Nom = '$nom', Prenom = '$prenom', Email = '$email' WHERE ID_Etud = '$id'";
 				$result=mysqli_query($cnx,$req);
-				if(!$result){
-					echo "<script>document.getElementById('SuccesMsg').style.display='block';</script>";
+				if($result){
+					header('Location: Profile.php?ProfileModifié');
 				}else{
 					include ("Profile.php");
 					echo '<script>
 							swal({
-							  title: "Les champs sans vide?",
-							  text: "Vous devez compéter toutes les informations!",
+							  title: "Erreur !",
+									  text: "Vérifier vos infos!",
 							  icon: "warning",
 							  buttons: true,
 							  dangerMode: true,
@@ -190,11 +191,11 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 
 	//else $_post empty
 	else{
-				include ("ProfileComplete.php");
+				include ("Profile.php");
 				echo '<script>
 						swal({
 						  title: "Les champs sans vide?",
-						  text: "Vous devez compéter toutes les informations!",
+						  text: "Vous devez compléter toutes les informations!",
 						  icon: "warning",
 						  buttons: true,
 						  dangerMode: true,

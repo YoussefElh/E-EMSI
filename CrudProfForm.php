@@ -8,20 +8,35 @@ if(isset($_POST["Ajouter"])){
 		$role="Prof";
 
 		$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
-			if($cnfpass==$password){
+			if($password==$cnfpass){
 				$req="insert into user values('','$login','$password','$role')";
 				$result=mysqli_query($cnx,$req);
-				header('Location: CrudProf.php');
-				echo "<script>document.getElementById('SuccesMsg').style.display='block';</script>";
+			
+				header('Location: CrudProf.php?ProfesseurAjouté');
 			}
 			else{
 				include ("CrudProf.php");
 				//echo "<script>alert('Vérifier vos infos');</script>";
-				echo "<script>document.getElementById('ConfMsg').style.display='block';</script>";
+				echo '<script>
+						swal({
+						  title: "Erreur !",
+						  text: "Le password est différnet de la confirmation!",
+						  icon: "warning",
+						  buttons: true,
+						  dangerMode: true,
+						});</script>';
 			}
 	}
 }
 else{
-        //$retour['error']="Error";
+	include ("CrudProf.php");
+       echo '<script>
+						swal({
+						  title: "Les champs sans vide?",
+						  text: "Vous devez compléter toutes les informations!",
+						  icon: "warning",
+						  buttons: true,
+						  dangerMode: true,
+						});</script>';
 }
 ?>

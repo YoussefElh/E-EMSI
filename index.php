@@ -64,20 +64,14 @@ else{
 	  		</div>
         <ul class="list-unstyled components mb-5">
           <li class="active">
-            <a href="#"><span class="fa fa-home mr-3"></span> Home</a>
-          </li>
-          <li>
-              <a href="#"><span class="fa fa-download mr-3 notif"><small class="d-flex align-items-center justify-content-center">5</small></span> Download</a>
+            <a href="index.php"><span class="fa fa-home mr-3"></span> Home</a>
           </li>
           <?php if($_SESSION['role']=="Admin"){
 			echo '<li>
 		            <a href="#"><span class="fa fa-book mr-3"></span> Cours</a>
 		          </li>
 		          <li>
-		            <a href="#"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
-		          </li>
-		          <li>
-		            <a href="#"><span class="fa fa-bars mr-3"></span> Matiére</a>
+		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
 		          </li>
 		          <li>
 		            <a href="CrudProf.php"><span class="fa fa-address-book-o mr-3"></span> Crud Professeur</a>
@@ -100,10 +94,7 @@ else{
 		            <a href="#"><span class="fa fa-book mr-3"></span> Cours</a>
 		          </li>
 		          <li>
-		            <a href="#"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
-		          </li>
-		          <li>
-		            <a href="#"><span class="fa fa-bars mr-3"></span> Matiére</a>
+		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
 		          </li>
 		          <li>
 		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Mes Fichier</a>
@@ -121,12 +112,6 @@ else{
 		            <a href="#"><span class="fa fa-book mr-3"></span> Cours</a>
 		          </li>
 		          <li>
-		            <a href="#"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
-		          </li>
-		          <li>
-		            <a href="#"><span class="fa fa-bars mr-3"></span> Matiére</a>
-		          </li>
-		          <li>
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
 		          </li>
 		          <li>
@@ -142,16 +127,30 @@ else{
 
     	</nav>
 
-        <!-- Page Content 
+        <!-- Page Content -->
       <div id="content" class="p-4 p-md-5 pt-5">
         
-      </div> -->
+      </div> 
 		</div>
 
-    <script src="js/jqueryMenu.min.js"></script>
+    
+  </body>
+  <!-- Footer -->
+<footer class="page-footer font-small blue" style="background-color: #a9ff70;">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="#"> eemsi.com</a>
+    BY<strong>  Youssef	Elhizabri</strong>
+    AND<strong>  Idriss Bacha</strong>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+</html>
+<script src="js/jqueryMenu.min.js"></script>
     <script src="js/popperMenu.js"></script>
     <script src="js/bootstrapMenu.min.js"></script>
     <script src="js/mainMenu.js"></script>
-  </body>
-</html>
 <?php } ?>

@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(E_ERROR | E_PARSE);
 /*$retour=array();
 $retour['debug']=$_GET;
 $_POST=array_merge($_POST,$_GET);
@@ -67,6 +67,8 @@ if(isset($_POST['login'])&&!empty($_POST['login'])&&isset($_POST['passwd'])&&!em
 					}
 				}
 				else{
+					
+					//header('Location: index.php');
 					include ("login.php");
 					//echo "<script>alert('Email ou password incorrecte !!');</script>";
 					echo "<script>document.getElementById('ConfMsg').style.display='block';</script>";
