@@ -15,11 +15,39 @@ else{
   	<title>E-EMSI</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">	
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/styleMenu.css">
+	<style type="text/css">
+		.input-group.md-form.form-sm.form-1 input{
+		  border: 2px solid #2e2e2e;
+		  border-top-right-radius: 0.25rem;
+		  border-bottom-right-radius: 0.25rem;
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		  
+		}
+		.input-group.md-form.form-sm.form-2 input {
+		  border: 2px solid #2e2e2e;
+		  border-top-left-radius: 0.25rem;
+		  border-bottom-left-radius: 0.25rem;
+		  
+		}
 		
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="css/styleMenu.css">
+		.input-group.md-form.form-sm.form-2 input.red-border {
+		  border: 2px solid #2e2e2e;
+		
+		}
+		.input-group.md-form.form-sm.form-2 input.lime-border {
+		  border: 2px solid #2e2e2e;
+		  
+
+		}
+		.input-group.md-form.form-sm.form-2 input.amber-border {
+		  border: 2px solid #2e2e2e;
+
+		}
+	</style>
+
   </head>
   <body>
   	<?php
@@ -67,12 +95,7 @@ else{
             <a href="index.php"><span class="fa fa-home mr-3"></span> Home</a>
           </li>
           <?php if($_SESSION['role']=="Admin"){
-			echo '<li>
-		            <a href="#"><span class="fa fa-book mr-3"></span> Cours</a>
-		          </li>
-		          <li>
-		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
-		          </li>
+			echo '
 		          <li>
 		            <a href="CrudProf.php"><span class="fa fa-address-book-o mr-3"></span> Crud Professeur</a>
 		          </li>
@@ -83,6 +106,12 @@ else{
 		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Crud Fichier</a>
 		          </li>
 		          <li>
+		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Crud Classe</a>
+		          </li>
+		          <li>
+		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Crud Cours</a>
+		          </li>
+		          <li>
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
 		          </li>
 		          <li>
@@ -90,11 +119,12 @@ else{
 		          </li>
 		        </ul>'; }
 		       else if($_SESSION['role']=="Prof"){
-		       		echo '<li>
-		            <a href="#"><span class="fa fa-book mr-3"></span> Cours</a>
+		       		echo '
+		          <li>
+		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Mes Classe</a>
 		          </li>
 		          <li>
-		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
+		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Mes Cours</a>
 		          </li>
 		          <li>
 		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Mes Fichier</a>
@@ -109,7 +139,7 @@ else{
 		       			}
 		       		else if($_SESSION['role']=="Etud"){
 		       		echo '<li>
-		            <a href="#"><span class="fa fa-book mr-3"></span> Cours</a>
+		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Cours</a>
 		          </li>
 		          <li>
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
@@ -129,7 +159,36 @@ else{
 
         <!-- Page Content -->
       <div id="content" class="p-4 p-md-5 pt-5">
-        
+      	<!-- Search form -->
+        <?php if($_SESSION['role']=="Etud"){ ?>
+        <div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded"><!--Alert -->
+		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		  <strong>Pas de code ?</strong>  Si vous avez pas le code d'accés veuillez contacter la direction !
+		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		    <span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<!--Alert -->
+		<h4>Rejoindre une classe à l'aide d'un code</h4>
+		<p>Veuillez insérer le code de votre classe qui vous a été livrer par la direction</p>
+		<form>
+		<div class="input-group md-form form-sm form-2 pl-0">
+			
+		  <input class="form-control my-0 py-1 lime-border" type="text" placeholder="Entrez le code" aria-label="Search">
+		  <div class="input-group-append" style="margin-right: 50%;">
+		    	<button type="button" class="btn btn-dark">Rejoindre</button>
+		  </div>
+		</div>
+		</form>
+		</div>
+
+		<!--classe  -->
+		<div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded">
+	
+		<h4>Votre classe</h4>
+		</div>
+
+       <?php }?>
       </div> 
 		</div>
 
@@ -149,6 +208,7 @@ else{
 </footer>
 <!-- Footer -->
 </html>
+
 <script src="js/jqueryMenu.min.js"></script>
     <script src="js/popperMenu.js"></script>
     <script src="js/bootstrapMenu.min.js"></script>

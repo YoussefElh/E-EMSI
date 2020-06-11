@@ -46,7 +46,7 @@ if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty(
 						
 						$req="insert into admin values('','$nom','$prenom','$email','$imageNewName','$id')";
 						$result=mysqli_query($cnx,$req);
-						header('Location: index.php');
+						header('Location: index.php?');
 
 					}
 					else if($_SESSION['role']=="Prof"){

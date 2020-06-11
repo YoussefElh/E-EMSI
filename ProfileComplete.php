@@ -31,7 +31,12 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
   <!--Requete-->
-
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>Allez vers Paramètre</strong> pour changer votre mot de passe livrer par la direction, aprés avoir compléter vos information !
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
 
   <div class="col">
     <div class="row">
@@ -52,7 +57,9 @@
                     </div>
                   </div>
                 </div>
+                
                 <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                  
                   <div class="text-center text-sm-left mb-2 mb-sm-0">
                     <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">Nom Prénom</h4>
                     <p class="mb-0">Login</p>
@@ -136,13 +143,10 @@
 </div>
 </div>
 
-<script src="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-  swal("Compte créee!", "veuillez compléter vos informations", "success");
-</script>
+
 </body>
   <!-- Footer -->
-<footer class="page-footer font-small blue" style="background-color: #a9ff70;">
+<footer class="page-footer font-small blue fixed-bottom" style="background-color: #a9ff70;">
 
   <!-- Copyright -->
   <div class="footer-copyright text-center py-3">© 2020 Copyright:
@@ -155,5 +159,8 @@
 </footer>
 <!-- Footer -->
 </html>
-
+<script src="http://netdna.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+  swal("Compte créee!", "veuillez compléter vos informations", "success");
+</script>
 <?php } ?>

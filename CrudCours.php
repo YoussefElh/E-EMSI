@@ -9,13 +9,13 @@
 	exit();
 	}
 
-else if($_SESSION['role']=="Admin"){
+else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['role']=="Etud"){
 ?>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>E-EMSI | Etudiant</title>
+<title>E-EMSI | Cours</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -160,65 +160,18 @@ else if($_SESSION['role']=="Admin"){
         margin-top: 10px;
         font-size: 13px;
     }    
-	/* Custom checkbox */
-	.custom-checkbox {
-		position: relative;
-	}
-	.custom-checkbox input[type="checkbox"] {    
-		opacity: 0;
-		position: absolute;
-		margin: 5px 0 0 3px;
-		z-index: 9;
-	}
-	.custom-checkbox label:before{
-		width: 18px;
-		height: 18px;
-	}
-	.custom-checkbox label:before {
-		content: '';
-		margin-right: 10px;
-		display: inline-block;
-		vertical-align: text-top;
-		background: white;
-		border: 1px solid #bbb;
-		border-radius: 2px;
-		box-sizing: border-box;
-		z-index: 2;
-	}
-	.custom-checkbox input[type="checkbox"]:checked + label:after {
-		content: '';
-		position: absolute;
-		left: 6px;
-		top: 3px;
-		width: 6px;
-		height: 11px;
-		border: solid #000;
-		border-width: 0 3px 3px 0;
-		transform: inherit;
-		z-index: 3;
-		transform: rotateZ(45deg);
-	}
-	.custom-checkbox input[type="checkbox"]:checked + label:before {
-		border-color: #03A9F4;
-		background: #03A9F4;
-	}
-	.custom-checkbox input[type="checkbox"]:checked + label:after {
-		border-color: #fff;
-	}
-	.custom-checkbox input[type="checkbox"]:disabled + label:before {
-		color: #b8b8b8;
-		cursor: auto;
-		box-shadow: none;
-		background: #ddd;
-	}
+	
 	/* Modal styles */
 	.modal .modal-dialog {
+
 		max-width: 400px;
 	}
 	.modal .modal-header, .modal .modal-body, .modal .modal-footer {
+
 		padding: 20px 30px;
 	}
 	.modal .modal-content {
+
 		border-radius: 3px;
 	}
 	.modal .modal-footer {
@@ -231,7 +184,7 @@ else if($_SESSION['role']=="Admin"){
 	.modal .form-control {
 		border-radius: 2px;
 		box-shadow: none;
-		border-color: #dddddd;
+		border-color: black;
 	}
 	.modal textarea.form-control {
 		resize: vertical;
@@ -242,22 +195,33 @@ else if($_SESSION['role']=="Admin"){
 	}	
 	.modal form label {
 		font-weight: normal;
-	}	
+	}
 	.my-custom-scrollbar {
 		position: relative;
-		height: 500px;
+		height:300px;
 		overflow: auto;
 		}
 		.table-wrapper-scroll-y {
 		display: block;
 		}
+	.overflow-auto{
+		position: relative;
+		height:600px;
+		overflow: auto;
+	}	
+
+	.list-group{
+	    max-height: 200px;
+	    overflow:scroll;
+	    -webkit-overflow-scrolling: touch;
+	}
 </style>
 <script type="text/javascript">
 
 </script>
 </head>
 <body>
-		<?php
+	<?php
         if($_SESSION['role']=="Admin"){
             $id=$_SESSION['idu'];
             $req="select * from user s,admin a where s.ID_User=a.FK_ID_USER and s.ID_User='$id'";
@@ -302,12 +266,12 @@ else if($_SESSION['role']=="Admin"){
             <a href="index.php"><span class="fa fa-home mr-3"></span> Home</a>
           </li>
           
-       <?php if($_SESSION['role']=="Admin"){
+                <?php if($_SESSION['role']=="Admin"){
 			echo '
 		          <li>
 		            <a href="CrudProf.php"><span class="fa fa-address-book-o mr-3"></span> Crud Professeur</a>
 		          </li>
-		          <li class="active">
+		          <li>
 		            <a href="CrudEtud.php"><span class="fa fa-address-book-o mr-3"></span> Crud Etudiant</a>
 		          </li>
 		          <li>
@@ -316,7 +280,7 @@ else if($_SESSION['role']=="Admin"){
 		          <li>
 		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Crud Classe</a>
 		          </li>
-		          <li>
+		          <li class="active">
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Crud Cours</a>
 		          </li>
 		          <li>
@@ -331,7 +295,7 @@ else if($_SESSION['role']=="Admin"){
 		          <li>
 		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Mes Classe</a>
 		          </li>
-		          <li>
+		          <li class="active">
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Mes Cours</a>
 		          </li>
 		          <li>
@@ -346,7 +310,7 @@ else if($_SESSION['role']=="Admin"){
 		        </ul>';
 		       			}
 		       		else if($_SESSION['role']=="Etud"){
-		       		echo '<li>
+		       		echo '<li class="active">
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Cours</a>
 		          </li>
 		          <li>
@@ -367,83 +331,225 @@ else if($_SESSION['role']=="Admin"){
 
         <!-- Page Content -->
       <div id="content" class="p-4 p-md-5 pt-5">
-    <div class="container">
+      	
+      	<div class="container">
+      	<?php if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){?>
+      		<?php if($_SESSION['role']=="Admin"){?>
+	    	
+			<div class="alert alert-warning" role="alert">
+			   <strong>Modifier !</strong> vous pouvez pas modifier un cours vous devez supprimer et ajouter a nouveau pour evitez les conflicts.
+			</div>
+			
+			<?php }?>
+        <?php
 
-<?php
-            
-            $req="select s.ID_User,s.Login,p.Nom,p.Prenom,p.Email from user s,etudiant p where s.ID_User=p.FK_ID_USER";
             $cnx=mysqli_connect("127.0.0.1","root","","eemsi");
-            $result=mysqli_query($cnx,$req);
-        
-?>
-        <div class="table-wrapper">
 
+            
+            if($_SESSION['role']=="Admin"){
+            $req="select * from Cours";
+            $result=mysqli_query($cnx,$req);
+        }
+        else if($_SESSION['role']=="Prof"){
+            $id=$_SESSION['idu'];
+            $req="SELECT * FROM cours c,professeur p,user s WHERE c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER and s.ID_User='$id'";
+            $result=mysqli_query($cnx,$req);
+            //$row=mysqli_fetch_array($result);
+        }
+        
+		?>
+        <div class="table-wrapper">
+        
             <div class="table-title">
                 <div class="row">
+                	<?php if($_SESSION['role']=="Prof"){?>
                     <div class="col-sm-6">
-						<h2>CRUD <b>Etudiants</b></h2>
+						<h2>E-EMSI <b>Cours</b></h2>
 					</div>
-					
+					<?php }?>
+					<?php if($_SESSION['role']=="Admin"){?>
+						<div class="col-sm-6">
+						<h2>CRUD <b>Cours</b></h2>
+					</div>
+					<div class="col-sm-6">
+						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Ajouter un nouveaux Cours</span></a>				
+					</div>
+				<?php }?>
                 </div>
             </div>
-         <div class="table-wrapper-scroll-y my-custom-scrollbar" >
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" >
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-						<th> </th>
-						<th>ID User</th>
-						<th>Login</th>
-                        <th>Nom Complet</th>
-                        <th>Email</th>
-						<th>Actions</th>
+						<th>
+							
+						</th>
+						<th>ID Cours</th>
+						<th>NomCours</th>
+						<th>Categorie</th>
+  						<th></th>
+  						
+  						
                         
                     </tr>
                 </thead>
                 <tbody>
                 	<?php while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){ ?>
                     <tr>
-						<td> </td>
-						<td><?php echo  $tab["ID_User"] ?></td>
-						<td><?php echo  $tab["Login"] ?></td>
-                        <td><?php echo  $tab["Nom"] ?> <?php echo  $tab["Prenom"] ?></td>
-                        <td><?php echo  $tab["Email"] ?></td>
-						
-                        
+						<td>
+							
+						</td>
+						<td><?php echo  $tab["ID_Cours"] ?></td>
+						<td><?php echo  $tab["NomCours"] ?></td>
+						<td><?php echo  $tab["Categorie"] ?></td>
+						<?php if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){?>
                         <td>
-                            
-                            <a href="Etud_del_Form.php?IDU=<?php echo $tab["ID_User"]; ?>" class="btn btn-outline-danger">Supprimer</a>
+                            <a  href="?IDF=<?php echo $tab["ID_Cours"]; ?>" class="btn btn-outline-info">Fichier</a>
                         </td>
+                   		<?php } ?>
+                       
+  						<?php if($_SESSION['role']=="Admin"){?>
+                        <td>
+                            <a href="Cours_del_Form.php?ID_Cours=<?php echo $tab["ID_Cours"]; ?>" class="btn btn-outline-danger">Supprimer</a>
+                        </td>
+                   	<?php } ?>
                     </tr>
                 <?php } ?>
+                    
+
                 </tbody>
             </table>
         </div>
         </div>
+        <?php }?>
     </div>
+    <div class="container" id="FileShow" >
+    	<?php if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){?>
+    	<?php if($_SESSION['role']=="Prof"){?>
+    	<div id="noFileShow" >
+		<div class="alert alert-warning" role="alert">
+		   <strong>Aucun fichier ?</strong> consulter l'onglet Mes Fichier pour ajouter ou supprimer un fichier.
+		</div>
+		</div>
+		<?php }?>
+    	<?php  
+    	if (isset($_GET["IDF"])) {
+	 		$id=$_GET["IDF"];
+    		$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+
+            $req="select * from file f,cours c where f.FK_ID_COURS=c.ID_Cours and c.ID_Cours='$id'";
+            $result=mysqli_query($cnx,$req);
+           
+        }
+    	?>
+
+    	<ul class="list-group">
+    		<li class="list-group-item active">Fichier</li>
+
+    	<?php while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){ ?>
+
+		  <li class="list-group-item"><strong>Nom :</strong><?php echo  $tab["FileName"] ?> | <strong>Description</strong> : <?php echo  $tab["Description"] ?></li>
+
+		<?php } ?>
+		</ul>
+	<?php } ?>
+    </div>
+    <?php if($_SESSION['role']=="Etud"){ ?>
+    
+    	
+    <div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded">
 	
-	<!-- Delete Modal HTML -->
-	<div id="deleteEtudiantModal" class="modal fade">
+		<div class="p-3 mb-2 text-white" style="background-color: #a9ff70">
+			<h1 style="text-align: center;">Vos cours</h1>
+		</div>
+
+		<div class="overflow-auto">
+		<div class="card text-white bg-dark mb-3" >
+		  <div class="card-header">
+		  	<h1 style="color: white;">JEE</h1>
+		  </div>
+		  <div class="card-body">
+		    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+
+		  </div>
+		  <div class="card-footer">
+		  	<a href="#" class="btn btn-primary">Fichier du cours</a>
+		  </div>
+		</div>
+		</div>
+	</div>
+		
+	
+	<?php } ?>
+	<!-- Edit Modal HTML -->
+	<?php 
+                $req="SELECT * FROM classe";
+                $cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+                $result=mysqli_query($cnx,$req);
+
+                $req2="SELECT * FROM professeur";
+                $result2=mysqli_query($cnx,$req2);
+                    ?>
+
+	<div id="addEmployeeModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form>
+				<form  method="POST" action="CrudCoursForm.php" target="_self" enctype="multipart/form-data">
 					<div class="modal-header">						
-						<h4 class="modal-title">Supprimer Etudiant</h4>
+						<h4 class="modal-title">Ajouter un Cours</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					</div>
-					<div class="modal-body">					
-						<p>Voulez-vous vraiment supprimer?</p>
-						<p class="text-warning"><small>cette action ne peut pas être annulée.</small></p>
+					<div class="modal-body" style="background-color: #d6d2d2;">					
+						<div class="form-group">
+							<label>Nom Cours</label>
+							<input type="text" name="NomCours" class="form-control" placeholder="nom Cours" required>
+						</div>
+						<div class="form-group">
+							<label>Categorie</label>
+							<input type="text" name="Categorie" id="CodeVis" class="form-control" required>
+							
+						</div>
+						<div class="form-group">
+							<label>Description</label>
+							<textarea name="description" rows="5" cols="44" placeholder="ici la description du cours" required></textarea>
+						</div>
+						<div class="form-group">
+                        <select name="idClasse" class="browser-default custom-select custom-select-lg mb-3" required>
+                          <option value="" disabled selected>Choisir une classe</option>
+                        <?php while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){ ?>
+                              <option value="<?php echo  $tab["ID_Classe"]; ?>"><?php echo  $tab["Nom"] ;?></option>
+                        <?php }?>
+                        </select>
+                        </div>
+                        <div class="form-group">
+                        <select name="idProf" class="browser-default custom-select custom-select-lg mb-3" required>
+                          <option value="" disabled selected>Choisir un professeur</option>
+                        <?php while($tab2=mysqli_fetch_array($result2,MYSQLI_ASSOC)){ ?>
+                              <option value="<?php echo  $tab2["ID_Prof"]; ?>"><?php echo  $tab2["Nom"] ;?> <?php echo  $tab2["Prenom"] ;?></option>
+                        <?php }?>
+                        </select>
+                        </div>				
 					</div>
+					 
+
+
+
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input type="submit" class="btn btn-danger" value="Delete">
+						<input type="submit" name="Ajouter" class="btn btn-success" value="Ajouter">
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
-   </div> 
+   </div>
+    
 </div>
+
+    
+
+
+	
 </body>
   <!-- Footer -->
 <footer class="page-footer font-small blue" style="background-color: #a9ff70;">
@@ -463,4 +569,37 @@ else if($_SESSION['role']=="Admin"){
     <script src="js/popperMenu.js"></script>
     <script src="js/bootstrapMenu.min.js"></script>
     <script src="js/mainMenu.js"></script>
-<?php } ?>
+<script type="text/javascript">
+	function genererCodeAcces() {
+	var numberChars = "0123456789";
+	var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	//var lowerChars = "abcdefghiklmnopqrstuvwxyz";
+	var allChars = numberChars + upperChars ;
+	var randPasswordArray = Array(5);
+	  randPasswordArray[0] = numberChars;
+	  randPasswordArray[1] = upperChars;
+	  randPasswordArray[2] = upperChars;
+	  randPasswordArray = randPasswordArray.fill(allChars, 3);
+	  document.getElementById('CodeVis').value = shuffleArray(randPasswordArray.map(function(x) { return x[Math.floor(Math.random() * x.length)] })).join('');
+	}
+
+	function shuffleArray(array) {
+	  for (var i = array.length - 1; i > 0; i--) {
+	    var j = Math.floor(Math.random() * (i + 1));
+	    var temp = array[i];
+	    array[i] = array[j];
+	    array[j] = temp;
+	  }
+	  return array;
+	}
+	//classeNom
+	function className(){
+
+	}
+</script>
+<?php } 
+else{
+	header("Location: login.php");
+	exit();
+}
+?>

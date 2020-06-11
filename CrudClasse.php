@@ -255,13 +255,8 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){
             <a href="index.php"><span class="fa fa-home mr-3"></span> Home</a>
           </li>
           
-          <?php if($_SESSION['role']=="Admin"){
-			echo '<li>
-		            <a href="#"><span class="fa fa-book mr-3"></span> Cours</a>
-		          </li>
-		          <li class="active">
-		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
-		          </li>
+                 <?php if($_SESSION['role']=="Admin"){
+			echo '
 		          <li>
 		            <a href="CrudProf.php"><span class="fa fa-address-book-o mr-3"></span> Crud Professeur</a>
 		          </li>
@@ -271,6 +266,12 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){
 		          <li>
 		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Crud Fichier</a>
 		          </li>
+		          <li class="active">
+		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Crud Classe</a>
+		          </li>
+		          <li>
+		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Crud Cours</a>
+		          </li>
 		          <li>
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
 		          </li>
@@ -279,11 +280,12 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){
 		          </li>
 		        </ul>'; }
 		       else if($_SESSION['role']=="Prof"){
-		       		echo '<li>
-		            <a href="#"><span class="fa fa-book mr-3"></span> Cours</a>
+		       		echo '
+		          <li class="active">
+		            <a href="CrudClasse.php"><span class="fa fa-graduation-cap mr-3"></span> Mes Classe</a>
 		          </li>
 		          <li>
-		            <a href="#"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
+		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Mes Cours</a>
 		          </li>
 		          <li>
 		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Mes Fichier</a>
@@ -298,10 +300,7 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){
 		       			}
 		       		else if($_SESSION['role']=="Etud"){
 		       		echo '<li>
-		            <a href="#"><span class="fa fa-book mr-3"></span> Cours</a>
-		          </li>
-		          <li>
-		            <a href="#"><span class="fa fa-graduation-cap mr-3"></span> Classe</a>
+		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Cours</a>
 		          </li>
 		          <li>
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>

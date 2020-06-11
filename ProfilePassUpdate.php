@@ -34,7 +34,7 @@ if(isset($_POST['old_password'])&&!empty($_POST['old_password'])&&isset($_POST['
 					$req="UPDATE user SET Login = '$login', Password = '$password' WHERE ID_User = '$id'";
 					$result=mysqli_query($cnx,$req);
 					if($result){
-						header('Location: Profile.php');
+						header('Location: Profile.php?ParamètreModifié');
 						exit();
 					}else{
 						include ("Profile.php");

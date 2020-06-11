@@ -195,7 +195,18 @@
           </div>
         </div>
       </div>
-
+      <div class="col-12 col-md-3 mb-3">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="px-xl-3">
+             
+                <li class="btn btn-block btn-info">
+                  <a href="index.php" style="text-decoration: none;color: white;"><span class="fa fa-home mr-3"></span>Home</a>
+                </li>
+              </div>
+            </div>
+          </div>
+      </div>
 
     </div>
 
