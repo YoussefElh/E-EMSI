@@ -4,7 +4,7 @@ if(isset($_POST["Ajouter"])){
 
 		$NomCours =$_POST['NomCours'];
 		$Categorie=$_POST['Categorie'];
-		$desc=$_POST['description'];
+		$desc=str_replace('\'', '\\\'', $_POST['description']);
 		$Classe=$_POST['idClasse'];
 		$Prof=$_POST['idProf'];
 

@@ -46,8 +46,96 @@ else{
 		  border: 2px solid #2e2e2e;
 
 		}
-	</style>
+		.overflow-auto{
+			position: relative;
+			height:400px;
+			overflow: auto;
+		}	
+		/*card box*/
+		/* Float four columns side by side */
+		.column {
+		  float: left;
+		  width: 25%;
+		  padding: 0 10px;
+		}
 
+		/* Remove extra left and right margins, due to padding */
+		.row {margin: 0 -5px;}
+
+		/* Clear floats after the columns */
+		.row:after {
+		  content: "";
+		  display: table;
+		  clear: both;
+		}
+
+		/* Responsive columns */
+		@media screen and (max-width: 300px) {
+		  .column {
+		    width: 100%;
+		    display: block;
+		    margin-bottom: 20px;
+		  }
+		}
+
+		/* Style the counter cards */
+		.card {
+		  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+		  padding: 16px;
+		  text-align: center;
+		  margin-bottom: 20px;
+		}
+	</style>
+	<!-- header -->
+	<!-- Navigation -->
+	<nav class="navbar navbar-expand-lg navbar-dark  static-top" style="background-color: #373737; margin-bottom: 5px;">
+	  <div class="container-fluid">
+	  	
+	    
+	    	<div class="text-center">
+	          <img style="height: 60px; " src="images/logodark.png" alt="">
+	          </div>
+	       
+	    
+	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+	          <span class="navbar-toggler-icon"></span>
+	        </button>
+	    <div class="collapse navbar-collapse" id="navbarResponsive">
+	      <ul class="navbar-nav ml-auto">
+	       
+	        <li class="nav-item">
+	          <a class="nav-link" href="#ContactModal" data-toggle="modal">Contact</a>
+	        </li>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+	<!-- ContactModal -->
+	<div class="modal fade" id="ContactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Contacter nous !</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="btn bg-dark" style="color: white;"> Youssef Elhizabri</div>
+	         <a class="btn btn-social-icon btn-facebook" href="https://www.facebook.com/youssef.elhizabri" style="background-color: #3B5998;color: white;"><span class="fa fa-facebook"></span></a>
+	         <a class="btn btn-social-icon btn-linkedin" href="https://www.linkedin.com/in/youssef-elhizabri-0a846b138/" style="background-color: #007BB6;color: white;"><span class="fa fa-linkedin"></span></a>
+	         <a class="btn btn-social-icon btn-google" style="background-color: #DD4B39;color: white;"><span class="fa fa-google"> elhizabri11@gmail.Com</span></a></br></br>
+	         <div class="btn bg-dark" style="color: white;"> Idriss Bacha</div>
+	         <a class="btn btn-social-icon btn-facebook" href="https://www.facebook.com/DiDis06" style="background-color: #3B5998;color: white;"><span class="fa fa-facebook"></span></a>
+	         <a class="btn btn-social-icon btn-linkedin" href="https://www.linkedin.com/in/idriss-bacha-14a272189/" style="background-color: #007BB6;color: white;"><span class="fa fa-linkedin"></span></a>
+	         <a class="btn btn-social-icon btn-google" style="background-color: #DD4B39;color: white;"><span class="fa fa-google"> idrissbacha04@gmail.com</span></a>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
   </head>
   <body>
   	<?php
@@ -160,7 +248,7 @@ else{
         <!-- Page Content -->
       <div id="content" class="p-4 p-md-5 pt-5">
       	<!-- Search form -->
-        <?php if($_SESSION['role']=="Etud"){ ?>
+<?php if($_SESSION['role']=="Etud"){ ?>
         <div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded"><!--Alert -->
 		<div class="alert alert-warning alert-dismissible fade show" role="alert">
 		  <strong>Pas de code ?</strong>  Si vous avez pas le code d'accés veuillez contacter la direction !
@@ -171,31 +259,88 @@ else{
 		<!--Alert -->
 		<h4>Rejoindre une classe à l'aide d'un code</h4>
 		<p>Veuillez insérer le code de votre classe qui vous a été livrer par la direction</p>
-		<form>
+
+		<form method="POST" action="index.php" target="_self" enctype="multipart/form-data">
 		<div class="input-group md-form form-sm form-2 pl-0">
 			
-		  <input class="form-control my-0 py-1 lime-border" type="text" placeholder="Entrez le code" aria-label="Search">
+		  <input class="form-control my-0 py-1 lime-border" type="text" name="code" placeholder="Entrez le code" aria-label="Search">
 		  <div class="input-group-append" style="margin-right: 50%;">
-		    	<button type="button" class="btn btn-dark">Rejoindre</button>
+		    	<input  type="submit" class="btn btn-dark" name="rejoindre" value="Rejoindre" />
 		  </div>
 		</div>
 		</form>
 		</div>
 
 		<!--classe  -->
-		<div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded">
-	
-		<h4>Votre classe</h4>
+		<?php
+			$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+			$id=$_SESSION['idu'];
+
+			
+
+            $req="select * from user s,etudiant e,classe c where e.FK_ID_CLASSE=c.ID_Classe and s.ID_User=e.FK_ID_USER and s.ID_User='$id'";
+            $result=mysqli_query($cnx,$req);
+            $row=mysqli_fetch_array($result);
+
+            if(isset($_POST['rejoindre'])){
+				$Code =$_POST['code'];
+				$req2="select * from classe where CodeAcces='$Code'";
+			}
+            else{
+            	$req2="select * from user s,etudiant e,classe c where e.FK_ID_CLASSE=c.ID_Classe and s.ID_User=e.FK_ID_USER and s.ID_User='$id'";
+            }
+            $result2=mysqli_query($cnx,$req2);
+
+            
+
+            
+
+		?>
+		
+			<div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded">
+				<h1  class="bg-dark" style="text-align: center; border: 2px ; border-radius: 5px;color: white;">Classe</h1>
+				<div class="overflow-auto">
+				
+
+	<?php while($tab=mysqli_fetch_array($result2,MYSQLI_ASSOC)){ ?>
+				  <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+				  	<div class="card-header">
+					  <h1 style="color: white;"><?php echo $tab['Nom']?></h1>
+					</div>
+					  <div class="card-body">
+
+			<?php if($tab['ID_Classe']!="1"){?>
+				<?php if($tab['ID_Classe']==$row['FK_ID_CLASSE']){?>
+					<a href="quitClasseForm.php?IDC_Q=<?php echo $tab["ID_Classe"]; ?>" class="btn btn-danger">Quittez</a>
+				<?php } else if($row['FK_ID_CLASSE']=="1"){?>
+			    	<a href="RejClasseForm.php?IDC_A=<?php echo $tab["ID_Classe"]; ?>" class="btn btn-primary">Rejoindre</a>
+				<?php } else{?>
+			    	<div class="alert alert-danger" role="alert">
+						Vous avez deja une classe !
+					</div>
+				<?php }?>
+			<?php } else{?>
+				<?php if($row['FK_ID_CLASSE']=="1"){?>
+					<div class="alert alert-danger" role="alert">
+						Vous n'avez aucune classe, rejoignez une par code !
+					</div>
+			<?php } }?>	
+					  </div>
+					
+	 <?php }?>
+				</div>
+				
+			</div>
 		</div>
 
-       <?php }?>
+<?php }?>
       </div> 
-		</div>
+</div>
 
     
   </body>
   <!-- Footer -->
-<footer class="page-footer font-small blue" style="background-color: #a9ff70;">
+<footer class="page-footer font-small blue" style="background-color: #a9ff70; margin-top: 5px;">
 
   <!-- Copyright -->
   <div class="footer-copyright text-center py-3">© 2020 Copyright:

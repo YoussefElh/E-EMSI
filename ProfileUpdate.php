@@ -1,5 +1,7 @@
 <?php
-session_start();
+if(!isset($_SESSION)){
+		    session_start();
+		}
 if(isset($_POST['prfUpdate'])){	
 if(isset($_POST['nom'])&&!empty($_POST['nom'])&&isset($_POST['prenom'])&&!empty($_POST['prenom'])&&isset($_POST['email'])&&!empty($_POST['email'])){
 

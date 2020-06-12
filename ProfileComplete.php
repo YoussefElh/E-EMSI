@@ -30,14 +30,15 @@
 <body>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
-  <!--Requete-->
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>Allez vers Paramètre</strong> pour changer votre mot de passe livrer par la direction, aprés avoir compléter vos information !
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
 
+      <?php if($_SESSION['role']=="Prof"){ ?>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Allez vers Paramètre</strong> pour changer votre mot de passe livrer par la direction, aprés avoir compléter vos information !
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+      <?php } ?>
   <div class="col">
     <div class="row">
       <div class="col mb-3">

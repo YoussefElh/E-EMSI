@@ -321,10 +321,25 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){
         <!-- Page Content -->
       <div id="content" class="p-4 p-md-5 pt-5">
       	<div class="container">
+      		<?php if($_SESSION['role']=="Admin"){?>
+	    	
+			<div class="alert alert-warning" role="alert">
+			   <strong>Modifier !</strong> vous pouvez pas modifier une classe vous devez supprimer et ajouter a nouveau pour evitez les conflicts.
+			</div>
+			
+			<?php }?>
         <?php
+
+        	$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+        	$id=$_SESSION['idu'];
+            if($_SESSION['role']=="Admin"){
+            $req="select * from classe where ID_Classe!='1'";
             
-            $req="select * from classe";
-            $cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+            }
+            else if($_SESSION['role']=="Prof"){
+            $req="select DISTINCT c.Nom,c.ID_Classe,c.CodeAcces from user s,professeur e,classe c,cours r where r.FK_ID_CLASSE_crs=c.ID_Classe and r.FK_ID_PROF_crs=e.ID_Prof and s.ID_User=e.FK_ID_USER and s.ID_User='$id'";
+            
+            }
             $result=mysqli_query($cnx,$req);
         
 		?>

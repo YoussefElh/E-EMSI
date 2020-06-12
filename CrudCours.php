@@ -206,15 +206,51 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 		}
 	.overflow-auto{
 		position: relative;
-		height:600px;
+		height:500px;
 		overflow: auto;
+	}
+	.overflow-auto-file{
+		position: relative;
+		height:200px;
+		overflow: auto;
+	}
+
+	/*card*/
+	/* Float four columns side by side */
+	.column {
+	  float: left;
+	  width: 25%;
+	  padding: 0 10px;
+	}
+
+	/* Remove extra left and right margins, due to padding */
+	.row {margin: 0 -5px;}
+
+	/* Clear floats after the columns */
+	.row:after {
+	  content: "";
+	  display: table;
+	  clear: both;
+	}
+
+	/* Responsive columns */
+	@media screen and (max-width: 600px) {
+	  .column {
+	    width: 100%;
+	    display: block;
+	    margin-bottom: 20px;
+	  }
+	}
+
+	/* Style the counter cards */
+	.card {
+	  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	  padding: 16px;
+	  text-align: center;
+	  background-color: #f1f1f1;
 	}	
 
-	.list-group{
-	    max-height: 200px;
-	    overflow:scroll;
-	    -webkit-overflow-scrolling: touch;
-	}
+	
 </style>
 <script type="text/javascript">
 
@@ -442,7 +478,7 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
            
         }
     	?>
-
+    	<div class="overflow-auto-file">
     	<ul class="list-group">
     		<li class="list-group-item active">Fichier</li>
 
@@ -452,33 +488,77 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 
 		<?php } ?>
 		</ul>
+		</div>
 	<?php } ?>
     </div>
+    <!--Etudiant-->
     <?php if($_SESSION['role']=="Etud"){ ?>
-    
+    <?php
+			$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+			$id=$_SESSION['idu'];
+
+            $req="select * from user s,etudiant e,classe c,cours r where r.FK_ID_CLASSE_crs=c.ID_Classe and e.FK_ID_CLASSE=c.ID_Classe and s.ID_User=e.FK_ID_USER and s.ID_User='$id'";
+            $result=mysqli_query($cnx,$req);
+
+	?>
     	
     <div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded">
 	
-		<div class="p-3 mb-2 text-white" style="background-color: #a9ff70">
-			<h1 style="text-align: center;">Vos cours</h1>
+		<div class="p-3 mb-2 text-white">
+			<h1  class="bg-dark" style="text-align: center; border: 2px ; border-radius: 5px;color: white;">Vos cours</h1>
 		</div>
 
 		<div class="overflow-auto">
+			<div class="row">
+	<?php while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){ ?>
+		  <div class="column">
 		<div class="card text-white bg-dark mb-3" >
 		  <div class="card-header">
-		  	<h1 style="color: white;">JEE</h1>
+		  	<h1 style="color: white;"><?php echo $tab['NomCours']?></h1>
+		  	<h4 style="color: #a9ff70;"><?php echo $tab['Categorie']?></h4>
 		  </div>
 		  <div class="card-body">
-		    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+		    <p class="card-text"><?php echo $tab['DescriptionCours']?></p>
 
 		  </div>
 		  <div class="card-footer">
-		  	<a href="#" class="btn btn-primary">Fichier du cours</a>
+		  	<a class="btn btn-primary" href="?IDC=<?php echo $tab["ID_Cours"]; ?>">Fichier du cours</a>
 		  </div>
 		</div>
 		</div>
+	<?php }?>
+		</div>
+		</div>
 	</div>
-		
+
+	<?php  
+    	if (isset($_GET["IDC"])) {
+	 		$id=$_GET["IDC"];
+    		$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+
+            $req="select * from file f,cours c where f.FK_ID_COURS=c.ID_Cours and c.ID_Cours='$id'";
+            $result=mysqli_query($cnx,$req);
+           	//$row=mysqli_fetch_array($result);
+        }
+    	?>
+    	<div class="overflow-auto-file">
+    	<ul class="list-group">
+    		<li class="list-group-item active"> 
+    			Fichier du cours
+    		</li>
+    		<?php while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){ ?>
+    		
+
+    	
+
+		  <li class="list-group-item"><strong>Nom :</strong><?php echo  $tab["FileName"] ?> | <strong>Description</strong> : <?php echo  $tab["Description"] ?>
+		  <a href="DownloadFileForm.php?IDF=<?php echo $tab['ID_File'] ?>" class="btn btn-outline-success">Download</a>
+		</li>
+
+
+		<?php } ?>
+		</ul>
+		</div>
 	
 	<?php } ?>
 	<!-- Edit Modal HTML -->
@@ -596,6 +676,13 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 	function className(){
 
 	}
+	//id cours to modal
+	$(document).ready(function () {
+	$('body').on('click', '.id_cours',function(){
+	document.getElementById("id_cours_modal").value = $(this).attr('data-id');
+	console.log($(this).attr('data-id'));
+	});
+	});
 </script>
 <?php } 
 else{
