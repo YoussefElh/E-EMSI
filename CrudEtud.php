@@ -255,6 +255,7 @@ else if($_SESSION['role']=="Admin"){
 <script type="text/javascript">
 
 </script>
+
 </head>
 <body>
 		<?php
@@ -370,12 +371,30 @@ else if($_SESSION['role']=="Admin"){
     <div class="container">
 
 <?php
+			$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+            if(isset($_POST['search'])&&!empty($_POST['etud'])){
+				$search=$_POST['etud'];
+				
+				$req="select s.ID_User,s.Login,p.Nom,p.Prenom,p.Email from user s,etudiant p where p.Nom like '%$search%' or p.Prenom like '%$search%' and s.ID_User=p.FK_ID_USER GROUP by p.Prenom";
+			}else{
+				$req="select s.ID_User,s.Login,p.Nom,p.Prenom,p.Email from user s,etudiant p where s.ID_User=p.FK_ID_USER";
+			}
             
-            $req="select s.ID_User,s.Login,p.Nom,p.Prenom,p.Email from user s,etudiant p where s.ID_User=p.FK_ID_USER";
-            $cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+            
             $result=mysqli_query($cnx,$req);
         
 ?>
+		<form method="POST" action="#" target="_self" enctype="multipart/form-data">
+    		<div style="margin-right: 30%;margin-left: 30%; ">
+		<div class="input-group md-form form-sm form-2 pl-0" >
+			
+		  <input class="form-control my-0 py-1 lime-border" style="background-color: gray;color: white;" type="text" name="etud" placeholder="chercher par nom ou prenom" aria-label="Search">
+		  <div class="input-group-append" >
+		    	<input  type="submit" class="btn btn-dark"  name="search" value="Chercher" />
+		  </div>
+		</div>
+		</div>
+		</form>
         <div class="table-wrapper">
 
             <div class="table-title">

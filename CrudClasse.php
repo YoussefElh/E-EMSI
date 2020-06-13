@@ -208,6 +208,7 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){
 <script type="text/javascript">
 
 </script>
+
 </head>
 <body>
 	<?php
@@ -321,6 +322,17 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){
         <!-- Page Content -->
       <div id="content" class="p-4 p-md-5 pt-5">
       	<div class="container">
+      		<form method="POST" action="#" target="_self" enctype="multipart/form-data">
+    		<div style="margin-right: 30%;margin-left: 30%; ">
+		<div class="input-group md-form form-sm form-2 pl-0" >
+			
+		  <input class="form-control my-0 py-1 lime-border" style="background-color: gray;color: white;" type="text" name="classe" placeholder="chercher par le nom de la classe" aria-label="Search">
+		  <div class="input-group-append" >
+		    	<input  type="submit" class="btn btn-dark"  name="search" value="Chercher" />
+		  </div>
+		</div>
+		</div>
+		</form></br>
       		<?php if($_SESSION['role']=="Admin"){?>
 	    	
 			<div class="alert alert-warning" role="alert">
@@ -333,11 +345,25 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){
         	$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
         	$id=$_SESSION['idu'];
             if($_SESSION['role']=="Admin"){
-            $req="select * from classe where ID_Classe!='1'";
+            	//recherche
+        	if(isset($_POST['search'])&&!empty($_POST['classe'])){
+				$search=$_POST['classe'];
+				$req="select * from classe where Nom like '%$search%'  and  ID_Classe!='1'";
+			}else{
+				$req="select * from classe where ID_Classe!='1'";
+			}
+            
             
             }
             else if($_SESSION['role']=="Prof"){
-            $req="select DISTINCT c.Nom,c.ID_Classe,c.CodeAcces from user s,professeur e,classe c,cours r where r.FK_ID_CLASSE_crs=c.ID_Classe and r.FK_ID_PROF_crs=e.ID_Prof and s.ID_User=e.FK_ID_USER and s.ID_User='$id'";
+            	if(isset($_POST['search'])&&!empty($_POST['classe'])){
+					$search=$_POST['classe'];
+					$req="select DISTINCT c.Nom,c.ID_Classe,c.CodeAcces from user s,professeur e,classe c,cours r where c.Nom like '%$search%' and  r.FK_ID_CLASSE_crs=c.ID_Classe and r.FK_ID_PROF_crs=e.ID_Prof and s.ID_User=e.FK_ID_USER and s.ID_User='$id'";
+				}
+				else{
+					$req="select DISTINCT c.Nom,c.ID_Classe,c.CodeAcces from user s,professeur e,classe c,cours r where r.FK_ID_CLASSE_crs=c.ID_Classe and r.FK_ID_PROF_crs=e.ID_Prof and s.ID_User=e.FK_ID_USER and s.ID_User='$id'";
+				}
+            
             
             }
             $result=mysqli_query($cnx,$req);

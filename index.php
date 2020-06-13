@@ -88,12 +88,12 @@ else{
 	</style>
 	<!-- header -->
 	<!-- Navigation -->
-	<nav class="navbar navbar-expand-lg navbar-dark  static-top" style="background-color: #373737; margin-bottom: 5px;">
+	<nav class="navbar navbar-expand-lg navbar-dark  static-top" style="background-color: #32373D;">
 	  <div class="container-fluid">
 	  	
 	    
 	    	<div class="text-center">
-	          <img style="height: 60px; " src="images/logodark.png" alt="">
+	          <img style="height: 60px; " src="images/logodarkk.png" alt="">
 	          </div>
 	       
 	    
@@ -282,7 +282,7 @@ else{
             $result=mysqli_query($cnx,$req);
             $row=mysqli_fetch_array($result);
 
-            if(isset($_POST['rejoindre'])){
+            if(isset($_POST['rejoindre'])&&!empty($_POST['code'])){
 				$Code =$_POST['code'];
 				$req2="select * from classe where CodeAcces='$Code'";
 			}
@@ -340,7 +340,7 @@ else{
     
   </body>
   <!-- Footer -->
-<footer class="page-footer font-small blue" style="background-color: #a9ff70; margin-top: 5px;">
+<footer class="page-footer font-small blue" style="background-color: #a9ff70;">
 
   <!-- Copyright -->
   <div class="footer-copyright text-center py-3">© 2020 Copyright:

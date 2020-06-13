@@ -206,7 +206,7 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 		}
 	.overflow-auto{
 		position: relative;
-		height:500px;
+		height:400px;
 		overflow: auto;
 	}
 	.overflow-auto-file{
@@ -250,11 +250,37 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 	  background-color: #f1f1f1;
 	}	
 
+	.input-group.md-form.form-sm.form-1 input{
+		  border: 2px solid #2e2e2e;
+		  border-top-right-radius: 0.25rem;
+		  border-bottom-right-radius: 0.25rem;
+
+		  
+		}
+		.input-group.md-form.form-sm.form-2 input {
+		  border: 2px solid #2e2e2e;
+		  border-top-left-radius: 0.25rem;
+		  border-bottom-left-radius: 0.25rem;
+		  
+		}
+		
+		.input-group.md-form.form-sm.form-2 input.red-border {
+		  border: 2px solid #2e2e2e;
+		
+		}
+		.input-group.md-form.form-sm.form-2 input.lime-border {
+		  border: 2px solid #2e2e2e;
+		  
+
+		}
+		.input-group.md-form.form-sm.form-2 input.amber-border {
+		  border: 2px solid #2e2e2e;
+
+		}
+
 	
 </style>
-<script type="text/javascript">
 
-</script>
 </head>
 <body>
 	<?php
@@ -367,6 +393,26 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 
         <!-- Page Content -->
       <div id="content" class="p-4 p-md-5 pt-5">
+      	<form method="POST" action="CrudCours.php" target="_self" enctype="multipart/form-data">
+    		<div style="margin-right: 30%;margin-left: 30%; ">
+		<div class="input-group md-form form-sm form-2 pl-0" >
+			
+		  <input class="form-control my-0 py-1 lime-border" style="background-color: gray;color: white;" type="text" name="cours2" placeholder="<?php 
+		  if($_SESSION['role']=="Admin"){
+		  	echo'chercher par nom ou id du cours';
+		  }
+		  else if($_SESSION['role']=="Prof"){ 
+		  	echo'chercher par le nom du cours';
+		  }
+
+		  ?>
+		  " aria-label="Search">
+		  <div class="input-group-append" >
+		    	<input  type="submit" class="btn btn-dark" name="search2" value="Chercher" />
+		  </div>
+		</div>
+		</div>
+		</form></br>
       	
       	<div class="container">
       	<?php if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){?>
@@ -383,12 +429,26 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 
             
             if($_SESSION['role']=="Admin"){
-            $req="select * from Cours";
+        	if(isset($_POST['search2'])&&!empty($_POST['cours2'])){
+				$search=$_POST['cours2'];
+				$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM cours c,professeur p,user s,classe a WHERE c.NomCours like '%$search%' or c.ID_Cours like '%$search%' and c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER GROUP by c.NomCours";
+			}
+			else{
+				$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM cours c,professeur p,user s,classe a WHERE c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER";
+			}
+            
+            
             $result=mysqli_query($cnx,$req);
         }
         else if($_SESSION['role']=="Prof"){
             $id=$_SESSION['idu'];
-            $req="SELECT * FROM cours c,professeur p,user s WHERE c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER and s.ID_User='$id'";
+            if(isset($_POST['search2'])&&!empty($_POST['cours2'])){
+				$search=$_POST['cours2'];
+				$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM cours c,professeur p,user s,classe a WHERE c.NomCours like '%$search%' and c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER and s.ID_User='$id'";
+			}else{
+				$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM cours c,professeur p,user s,classe a WHERE c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER and s.ID_User='$id'";
+			}
+            
             $result=mysqli_query($cnx,$req);
             //$row=mysqli_fetch_array($result);
         }
@@ -423,6 +483,8 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 						<th>ID Cours</th>
 						<th>NomCours</th>
 						<th>Categorie</th>
+						<th>Classe</th>
+						<th>Professeur</th>
   						<th></th>
   						
   						
@@ -438,6 +500,8 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 						<td><?php echo  $tab["ID_Cours"] ?></td>
 						<td><?php echo  $tab["NomCours"] ?></td>
 						<td><?php echo  $tab["Categorie"] ?></td>
+						<td><?php echo  $tab["NomClasse"] ?></td>
+						<td><?php echo  $tab["NomProf"] ?> <?php echo  $tab["Prenom"] ?></td>
 						<?php if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){?>
                         <td>
                             <a  href="?IDF=<?php echo $tab["ID_Cours"]; ?>" class="btn btn-outline-info">Fichier</a>
@@ -496,13 +560,35 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
     <?php
 			$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
 			$id=$_SESSION['idu'];
-
-            $req="select * from user s,etudiant e,classe c,cours r where r.FK_ID_CLASSE_crs=c.ID_Classe and e.FK_ID_CLASSE=c.ID_Classe and s.ID_User=e.FK_ID_USER and s.ID_User='$id'";
+			
+			if(isset($_POST['search'])&&isset($_POST['cours'])){
+				$search=$_POST['cours'];
+				$req="select * from user s,etudiant e,classe c,cours r where r.Categorie like '%$search%' and r.FK_ID_CLASSE_crs=c.ID_Classe and e.FK_ID_CLASSE=c.ID_Classe and s.ID_User=e.FK_ID_USER and s.ID_User='$id'";
+			}
+			else{
+				$req="select * from user s,etudiant e,classe c,cours r where r.FK_ID_CLASSE_crs=c.ID_Classe and e.FK_ID_CLASSE=c.ID_Classe and s.ID_User=e.FK_ID_USER and s.ID_User='$id'";
+			}
+            
             $result=mysqli_query($cnx,$req);
 
 	?>
+	
+
+		
+	
     	
     <div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded">
+    	<form method="POST" action="CrudCours.php" target="_self" enctype="multipart/form-data">
+    		<div style="margin-right: 30%;margin-left: 30%; ">
+		<div class="input-group md-form form-sm form-2 pl-0" >
+			
+		  <input class="form-control my-0 py-1 lime-border" style="background-color: gray;color: white;" type="text" name="cours" placeholder="chercher par catégorie" aria-label="Search">
+		  <div class="input-group-append" >
+		    	<input  type="submit" class="btn btn-dark" name="search" value="Chercher" />
+		  </div>
+		</div>
+		</div>
+		</form>
 	
 		<div class="p-3 mb-2 text-white">
 			<h1  class="bg-dark" style="text-align: center; border: 2px ; border-radius: 5px;color: white;">Vos cours</h1>
@@ -512,7 +598,7 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 			<div class="row">
 	<?php while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){ ?>
 		  <div class="column">
-		<div class="card text-white bg-dark mb-3" >
+		<div class="card text-white bg-dark mb-3">
 		  <div class="card-header">
 		  	<h1 style="color: white;"><?php echo $tab['NomCours']?></h1>
 		  	<h4 style="color: #a9ff70;"><?php echo $tab['Categorie']?></h4>

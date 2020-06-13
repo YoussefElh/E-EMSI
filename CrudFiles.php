@@ -254,6 +254,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 		}
 </style>
 
+
 </head>
 <body>
 	<?php
@@ -367,20 +368,55 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 <div id="content" class="p-4 p-md-5 pt-5">
 			
     <div class="container">
+    	<form method="POST" action="CrudFiles.php" target="_self" enctype="multipart/form-data">
+    		<div style="margin-right: 30%;margin-left: 30%; ">
+		<div class="input-group md-form form-sm form-2 pl-0" >
+			
+		  <input class="form-control my-0 py-1 lime-border" style="background-color: gray;color: white;" type="text" name="file" placeholder="<?php 
+		  if($_SESSION['role']=="Admin"){
+		  	echo'chercher par le prénom du prof ou par id du fichier';
+		  }
+		  else if($_SESSION['role']=="Prof"){ 
+		  	echo'chercher par id du fichier';
+		  }
+
+		  ?>" aria-label="Search">
+		  <div class="input-group-append" >
+		    	<input  type="submit" class="btn btn-dark"  name="search" value="Chercher" />
+		  </div>
+		</div>
+		</div>
+		</form></br>
     	<div class="alert alert-warning" role="alert">
 			  Pour ne pas perdre vos <strong>fichier</strong> veuiller les <strong>archiver</strong> avant de les uploader sur le site ! 
 			</div>
 <?php
             if($_SESSION['role']=="Admin"){
-            	$req="SELECT * FROM file f,professeur p where p.ID_Prof=f.FK_ID_PROF";
-	            $cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+            	$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+            	//recherche
+            	if(isset($_POST['search'])&&!empty($_POST['file'])){
+				$search=$_POST['file'];
+				$req="SELECT * FROM file f,professeur p where p.Prenom like '%$search%' or f.ID_File like '%$search%' and p.ID_Prof=f.FK_ID_PROF GROUP by p.Prenom";
+				}else{
+					$req="SELECT * FROM file f,professeur p where p.ID_Prof=f.FK_ID_PROF";
+				}
 	            $result=mysqli_query($cnx,$req);
         	}
+
         	else if($_SESSION['role']=="Prof"){
         	$id=$_SESSION['idu'];
-        		$req="SELECT * FROM file f,professeur p,user s,cours c where f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
-	            $cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+        	//recherche
+        	$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+            	if(isset($_POST['search'])&&!empty($_POST['file'])){
+				$search=$_POST['file'];
+				$req="SELECT * FROM file f,professeur p,user s,cours c where f.ID_File like '%$search%' and f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
+			}
+				else{
+					$req="SELECT * FROM file f,professeur p,user s,cours c where f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
+				}
 	            $result=mysqli_query($cnx,$req);
+
+
 	            //select des cours dans dropdown par prof connecte
 	            $req2="SELECT * FROM cours c,professeur p,user s where c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER and s.ID_User='$id'";
 	            $result2=mysqli_query($cnx,$req2);
@@ -389,6 +425,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
             	
         
 ?>
+		
         <div class="table-wrapper">
         	
             <div class="table-title">
