@@ -270,6 +270,9 @@ else if($_SESSION['role']=="Admin"){
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Crud Cours</a>
 		          </li>
 		          <li>
+		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Crud Devoir</a>
+		          </li>
+		          <li>
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
 		          </li>
 		          <li>
@@ -285,6 +288,9 @@ else if($_SESSION['role']=="Admin"){
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Mes Cours</a>
 		          </li>
 		          <li>
+		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Crud Devoir</a>
+		          </li>
+		          <li>
 		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Mes Fichier</a>
 		          </li>
 		          <li>
@@ -298,6 +304,9 @@ else if($_SESSION['role']=="Admin"){
 		       		else if($_SESSION['role']=="Etud"){
 		       		echo '<li>
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Cours</a>
+		          </li>
+		          <li>
+		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Devoir</a>
 		          </li>
 		          <li>
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>

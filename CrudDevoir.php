@@ -10,13 +10,13 @@
 	exit();
 	}
 
-else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
+else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin" || $_SESSION['role']=="Etud"){
 ?>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>E-EMSI | Fichier</title>
+<title>E-EMSI | Devoir</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -310,7 +310,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 		          <li>
 		            <a href="CrudEtud.php"><span class="fa fa-address-book-o mr-3"></span> Crud Etudiant</a>
 		          </li>
-		          <li class="active">
+		          <li>
 		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Crud Fichier</a>
 		          </li>
 		          <li>
@@ -319,7 +319,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 		          <li>
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Crud Cours</a>
 		          </li>
-		          <li>
+		          <li class="active">
 		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Crud Devoir</a>
 		          </li>
 		          <li>
@@ -337,10 +337,10 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 		          <li>
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Mes Cours</a>
 		          </li>
-		          <li>
+		          <li class="active">
 		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Crud Devoir</a>
 		          </li>
-		          <li class="active">
+		          <li >
 		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Mes Fichier</a>
 		          </li>
 		          <li>
@@ -355,7 +355,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 		       		echo '<li>
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Cours</a>
 		          </li>
-		          <li>
+		          <li class="active">
 		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Devoir</a>
 		          </li>
 		          <li>
@@ -377,15 +377,18 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 <div id="content" class="p-4 p-md-5 pt-5">
 			
     <div class="container">
-    	<form method="POST" action="CrudFiles.php" target="_self" enctype="multipart/form-data">
+    	<form method="POST" action="CrudDevoir.php" target="_self" enctype="multipart/form-data">
     		<div style="margin-right: 30%;margin-left: 30%; ">
 		<div class="input-group md-form form-sm form-2 pl-0" >
 			
 		  <input class="form-control my-0 py-1 lime-border" style="background-color: gray;color: white;" type="text" name="file" placeholder="<?php 
 		  if($_SESSION['role']=="Admin"){
-		  	echo'chercher par le prénom du prof ou par id du fichier';
+		  	echo'chercher par le prénom d\'etudiant ou par id du fichier';
 		  }
 		  else if($_SESSION['role']=="Prof"){ 
+		  	echo'chercher par id du devoir';
+		  }
+		  else if($_SESSION['role']=="Etud"){ 
 		  	echo'chercher par id du fichier';
 		  }
 
@@ -396,18 +399,20 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 		</div>
 		</div>
 		</form></br>
+		<?php if($_SESSION['role']=="Etud"){?>
     	<div class="alert alert-warning" role="alert">
 			  Pour ne pas perdre vos <strong>fichier</strong> veuiller les <strong>archiver</strong> avant de les uploader sur le site ! 
 			</div>
+		<?php }?>
 <?php
             if($_SESSION['role']=="Admin"){
             	$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
             	//recherche
             	if(isset($_POST['search'])&&!empty($_POST['file'])){
 				$search=$_POST['file'];
-				$req="SELECT * FROM file f,professeur p where p.Prenom like '%$search%' or f.ID_File like '%$search%' and p.ID_Prof=f.FK_ID_PROF GROUP by p.Prenom";
+				$req="SELECT * FROM filedevoir f,etudiant p where p.Prenom like '%$search%' or f.ID_FileDv like '%$search%' and p.ID_Etud=f.FK_ID_ETUDIANT_fdv GROUP by p.Prenom";
 				}else{
-					$req="SELECT * FROM file f,professeur p where p.ID_Prof=f.FK_ID_PROF";
+					$req="SELECT * FROM filedevoir f,etudiant p where p.ID_Etud=f.FK_ID_ETUDIANT_fdv GROUP by p.Prenom";
 				}
 	            $result=mysqli_query($cnx,$req);
         	}
@@ -418,56 +423,114 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
         	$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
             	if(isset($_POST['search'])&&!empty($_POST['file'])){
 				$search=$_POST['file'];
-				$req="SELECT * FROM file f,professeur p,user s,cours c where f.ID_File like '%$search%' and f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
+				$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' from devoir d,classe a,cours c,professeur p,user s where d.ID_Devoir like '%$search%' and d.FK_ID_COURS_dv=c.ID_Cours and d.FK_ID_CLASSE_dv=a.ID_Classe and d.FK_ID_PROF_dv=p.ID_Prof and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
 			}
 				else{
-					$req="SELECT * FROM file f,professeur p,user s,cours c where f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
+					$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' from devoir d,classe a,cours c,professeur p,user s where d.FK_ID_COURS_dv=c.ID_Cours and d.FK_ID_CLASSE_dv=a.ID_Classe and d.FK_ID_PROF_dv=p.ID_Prof and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
 				}
 	            $result=mysqli_query($cnx,$req);
 
 
 	            //select des cours dans dropdown par prof connecte
-	            $req2="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM cours c,professeur p,classe a,user s where c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER and s.ID_User='$id' order by a.Nom";
+	            $req2="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM classe a,cours c,professeur p,user s where c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER and s.ID_User='$id' GROUP BY a.Nom order by a.Nom";
 	            $result2=mysqli_query($cnx,$req2);
+
+	            $req4="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM classe a,cours c,professeur p,user s where c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER and s.ID_User='$id' order by a.Nom";
+	            $result4=mysqli_query($cnx,$req4);
+        	}
+
+        	else if($_SESSION['role']=="Etud"){
+        	$id=$_SESSION['idu'];
+        	//recherche
+        	$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+            	if(isset($_POST['search'])&&!empty($_POST['file'])){
+				$search=$_POST['file'];
+				$req="SELECT * FROM filedevoir f,etudiant p,user s,cours c,devoir d where f.ID_FileDv like '%$search%' and f.FK_ID_DEVOIR_fdv=d.ID_Devoir and d.FK_ID_COURS_dv=c.ID_Cours and p.ID_Etud=f.FK_ID_ETUDIANT_fdv and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
+			}
+				else{
+					$req="SELECT * FROM filedevoir f,etudiant p,user s,cours c,devoir d where f.FK_ID_DEVOIR_fdv=d.ID_Devoir and d.FK_ID_COURS_dv=c.ID_Cours and p.ID_Etud=f.FK_ID_ETUDIANT_fdv and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
+				}
+	            $result=mysqli_query($cnx,$req);
+
+
+	            //select des devoirs dans dropdown par etud connecte
+	            $req3="SELECT *,a.Nom as 'NomClasse',e.Nom as 'NomEtud' FROM devoir d,cours c,classe a,etudiant e,user s where d.FK_ID_COURS_dv=c.ID_Cours and e.FK_ID_CLASSE=a.ID_Classe and c.FK_ID_CLASSE_crs=a.ID_Classe and s.ID_User=e.FK_ID_USER and d.EtatDv='0' and s.ID_User='$id' ";
+	            $result3=mysqli_query($cnx,$req3);
         	}
             	
             	
         
 ?>
 		
-        <div class="table-wrapper">
+    <div class="table-wrapper">
         	
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-						<h2>CRUD <b>Fichier</b></h2>
+						<h2><b style="color: white">Devoir</b></h2>
 					</div>
 					<?php if($_SESSION['role']=="Prof"){
 						echo '<div class="col-sm-6">
-						<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Ajouter un nouveau Fichier</span></a>				
+						<a href="#addDevoir" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Ajouter un nouveau Devoir</span></a>				
+					</div>';}
+					else if($_SESSION['role']=="Etud"){
+						echo '<div class="col-sm-6">
+						<a href="#addDevoirFile" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Ajouter un fichier devoir</span></a>				
 					</div>';
-					}?>
+					}
+					?>
 					
                 </div>
             </div>
+            <!-- #########################Admin-->
+    <?php if($_SESSION['role']=="Admin"){?>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" >
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+						<th>ID File</th>
+						<th>Nom Fichier</th>
+						<th>Télécharger</th>
+						<th>Description</th>
+                        <th>Uploader</th>
+                        <th>Action</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                	<?php while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){ ?>
+                    <tr>
+						<td><?php echo  $tab["ID_FileDv"] ?></td>
+						<td><?php echo  $tab["FileNameDv"] ?></td>
+						<td><a href="DownloadDevoir.php?ID_dv_tel=<?php echo $tab['ID_FileDv'] ?>" class="btn btn-outline-success">Download</a></td>
+                        <td><?php echo  $tab["DescriptionDv"] ?></td>
+                        <td><?php echo  $tab["Nom"]?> <?php echo $tab["Prenom"];?></td>
+                        <td>
+                            <a href="DevoirFileDelete.php?ID_dv_del=<?php echo $tab["ID_FileDv"]; ?>" class="btn btn-outline-danger">Supprimer</a>
+                        </td>
+                    </tr>
+                <?php }?>
+                </tbody>
+            </table>
+        </div>
+    <?php }?>
+	<!-- #########################Prof-->
+    <?php if($_SESSION['role']=="Prof"){?>
         <div class="table-wrapper-scroll-y my-custom-scrollbar" >
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
 						<th>
 						 
-							</span>
 						</th>
-						<th>ID File</th>
-						<th>Nom Fichier</th>
-						<th>Télécharger</th>
-						<th>Description</th>
-						<?php if($_SESSION['role']=="Prof"){
-                        echo '<th>Cours</th>';
-                        } ?>
-                        <?php if($_SESSION['role']=="Admin"){
-                        echo '<th>Uploader</th>';
-                        } ?>
+						<th>ID Devoir</th>
+						<th>Sujet</th>
+						<th>Date début</th>
+						<th>Date fin</th>
+						<th>Etat</th>
+						<th>Etat action</th>
+						<th>Cours</th>
+						<th>Classe</th>
                         <th>Action</th>
                         
                     </tr>
@@ -476,38 +539,135 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
                 	<?php while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){ ?>
                     <tr>
 						<td>
-							 
-						</td>
-						<td><?php echo  $tab["ID_File"] ?></td>
-						<td><?php echo  $tab["FileName"] ?></td>
-						<td><a href="DownloadFileForm.php?IDF=<?php echo $tab['ID_File'] ?>" class="btn btn-outline-success">Download</a></td>
-                        <td><?php echo  $tab["Description"] ?></td>
-                        <?php if($_SESSION['role']=="Prof"){?>
+	                     <a href="#.php?ID_dv_aff=<?php echo $tab["ID_Devoir"]; ?>" class="btn btn-outline-primary">Voir</a>
+	                     </td>
+						<td><?php echo  $tab["ID_Devoir"] ?></td>
+						<td><?php echo  $tab["Sujet"] ?></td>
+						<td><?php echo  $tab["DateDebut"] ?></td>
+						<td><?php echo  $tab["DateFin"] ?></td>
+						<td><?php if($tab["EtatDv"]=="0"){ ?>
+							<h5 style="color: green;">Activé</h5>
+							<td>
+	                            <a href="#.php?ID_dv_activer=<?php echo $tab["ID_Devoir"]; ?>" class="btn btn-outline-danger">Cloturer</a>
+	                        </td>
+	                    	
+						<?php }	else if($tab["EtatDv"]=="1"){ ?>
+							<h5 style='color:red;'>Cloturé</h5>
+							<td>
+	                            <a href="#.php?ID_dv_clot=<?php echo $tab["ID_Devoir"]; ?>" class="btn btn-outline-success">Activer</a>
+	                        </td>
+	                    <?php } ?>
+
+	                    </td>
                         <td><?php echo  $tab["NomCours"] ?></td>
-                        <?php } ?>
-                        
-                        <?php if($_SESSION['role']=="Admin"){?> 
-                        <?php echo'<td>'?>
-                        	<?php echo  $tab["Nom"]?> <?php echo $tab["Prenom"];?>
-                        <?php echo'</td>'?>
-                        <?php }?>
+                        <td><?php echo  $tab["NomClasse"] ?></td>
                         <td>
-                            
-                            <a href="File_del_Form.php?IDF=<?php echo $tab["ID_File"]; ?>" class="btn btn-outline-danger">Supprimer</a>
+                            <a href="#.php?ID_dv=<?php echo $tab["ID_Devoir"]; ?>" class="btn btn-outline-danger">Supprimer</a>
                         </td>
                     </tr>
                 <?php }?>
                 </tbody>
             </table>
         </div>
+    <?php }?>
+    <!-- #########################Etud-->
+    <?php if($_SESSION['role']=="Etud"){?>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" >
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+						<th>ID File</th>
+						<th>Nom Fichier</th>
+						<th>Télécharger</th>
+						<th>Description</th>
+						<th>Cours</th>
+                        <th>Sujet du Devoir</th>
+                        <th>Action</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                	<?php while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){ ?>
+                    <tr>
+						<td><?php echo  $tab["ID_FileDv"] ?></td>
+						<td><?php echo  $tab["FileNameDv"] ?></td>
+						<td><a href="DownloadDevoir.php?ID_dv_tel=<?php echo $tab['ID_FileDv'] ?>" class="btn btn-outline-success">Download</a></td>
+                        <td><?php echo  $tab["DescriptionDv"] ?></td>
+                        <td><?php echo  $tab["NomCours"]?></td>
+                        <td><?php echo  $tab["Sujet"]?></td>
+                        <td>
+                            <a href="DevoirFileDelete.php?ID_dv_del=<?php echo $tab["ID_FileDv"]; ?>" class="btn btn-outline-danger">Supprimer</a>
+                        </td>
+                    </tr>
+                <?php }?>
+                </tbody>
+            </table>
+        </div>
+    <?php }?>
         </div>
     </div>
 	
 	<!-- Edit Modal HTML -->
-	<div id="addEmployeeModal" class="modal fade">
+	<div id="addDevoir" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form  method="POST" action="CrudFilesForm.php" target="_self" enctype="multipart/form-data">
+				<form  method="POST" action="DevoirForm.php" target="_self" enctype="multipart/form-data">
+					<div class="modal-header">						
+						<h4 class="modal-title">Ajouter un fichier</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body" >
+						<div class="form-group">
+							<label>Sujet</label>
+							<textarea name="sujet" rows="2" cols="40" placeholder="ici le sujet du devoir"></textarea>
+						</div>
+						<div class="form-group">
+							<label>Date début</label>
+							<input type="Date" name="dDebut" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Date fin</label>
+							<input type="Date" name="dFin" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Etat</label></br>
+							<label class="radio-inline" style="color: green;">
+						      <input type="radio" name="etat" value="0" checked >Activé
+						    </label>
+						    <label class="radio-inline" style="color: red;">
+						      <input type="radio" name="etat" value="1" >Cloturé
+						    </label>
+						</div>
+						<div class="form-group">
+						<select name="idClasse" class="browser-default custom-select custom-select-lg mb-3" required>
+						  <option value="" disabled selected>Choisir une classe</option>
+						<?php while($tab2=mysqli_fetch_array($result2,MYSQLI_ASSOC)){ ?>
+							  <option value="<?php echo  $tab2["ID_Classe"]; ?>"><?php echo  $tab2["NomClasse"] ;?></option>
+						<?php }?>	
+						</select>
+						</div>	
+						<div class="form-group">
+						<select name="idCours" class="browser-default custom-select custom-select-lg mb-3" required>
+						  <option value="" disabled selected>Choisir un cours</option>
+						<?php while($tab4=mysqli_fetch_array($result4,MYSQLI_ASSOC)){ ?>
+							  <option value="<?php echo  $tab4["ID_Cours"]; ?>"><?php echo  $tab4["NomClasse"] ;?> : <?php echo  $tab4["NomCours"] ;?></option>
+						<?php }?>	
+						</select>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+						<input type="submit" name="Ajouter" class="btn btn-success" value="Ajouter">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- Edit Modal HTML -->
+	<div id="addDevoirFile" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form  method="POST" action="DevoirFileForm.php" target="_self" enctype="multipart/form-data">
 					<div class="modal-header">						
 						<h4 class="modal-title">Ajouter un fichier</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -519,20 +679,20 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 						</div>
 						<div class="form-group">
 							<label>Description</label>
-							<textarea name="description" rows="5" cols="40" placeholder="ici la description ou le nom du fichier"></textarea>
+							<textarea name="DescriptionDv" rows="5" cols="40" placeholder="ici la description ou le nom du fichier"></textarea>
 						</div>
 						<div class="form-group">
-						<select name="idCours" class="browser-default custom-select custom-select-lg mb-3" required>
-						  <option value="" disabled selected>Choisir un cours</option>
-						<?php while($tab2=mysqli_fetch_array($result2,MYSQLI_ASSOC)){ ?>
-							  <option value="<?php echo  $tab2["ID_Cours"]; ?>"><?php echo  $tab2["NomClasse"] ;?> : <?php echo  $tab2["NomCours"] ;?></option>
+						<select name="idDevoir" class="browser-default custom-select custom-select-lg mb-3" required>
+						  <option value="" disabled selected>Choisir un devoir</option>
+						<?php while($tab3=mysqli_fetch_array($result3,MYSQLI_ASSOC)){ ?>
+							  <option value="<?php echo  $tab3["ID_Devoir"]; ?>"><?php echo  $tab3["Sujet"] ;?></option>
 						<?php }?>	
 						</select>
 						</div>	
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-						<input type="submit" name="Ajouter" class="btn btn-success" value="Ajouter">
+						<input type="submit" name="AjouterFdv" class="btn btn-success" value="Ajouter">
 					</div>
 				</form>
 			</div>

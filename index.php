@@ -85,6 +85,13 @@ else{
 		  text-align: center;
 		  margin-bottom: 20px;
 		}
+
+		.overflow-auto-file{
+				position: relative;
+				height:300px;
+				overflow: auto;
+				}
+		
 	</style>
 	<!-- header -->
 	<!-- Navigation -->
@@ -200,6 +207,9 @@ else{
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Crud Cours</a>
 		          </li>
 		          <li>
+		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Crud Devoir</a>
+		          </li>
+		          <li>
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
 		          </li>
 		          <li>
@@ -215,6 +225,9 @@ else{
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Mes Cours</a>
 		          </li>
 		          <li>
+		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Crud Devoir</a>
+		          </li>
+		          <li>
 		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Mes Fichier</a>
 		          </li>
 		          <li>
@@ -228,6 +241,9 @@ else{
 		       		else if($_SESSION['role']=="Etud"){
 		       		echo '<li>
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Cours</a>
+		          </li>
+		          <li>
+		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Devoir</a>
 		          </li>
 		          <li>
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
@@ -247,8 +263,57 @@ else{
 
         <!-- Page Content -->
       <div id="content" class="p-4 p-md-5 pt-5">
+
       	<!-- Search form -->
 <?php if($_SESSION['role']=="Etud"){ ?>
+	
+	<div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded">
+		<div class="overflow-auto-file">
+	<?php 
+		$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+		$id=$_SESSION['idu'];
+         $req3="SELECT *,a.Nom as 'NomClasse',e.Nom as 'NomEtud',p.Nom as 'NomProf',p.Prenom as 'PrenomProf' FROM devoir d,cours c,classe a,etudiant e,professeur p,user s where c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and d.FK_ID_COURS_dv=c.ID_Cours and e.FK_ID_CLASSE=a.ID_Classe and c.FK_ID_CLASSE_crs=a.ID_Classe and s.ID_User=e.FK_ID_USER and d.EtatDv='0' and s.ID_User='$id'";
+        $result3=mysqli_query($cnx,$req3);
+        $req2="SELECT *,a.Nom as 'NomClasse',e.Nom as 'NomEtud',p.Nom as 'NomProf',p.Prenom as 'PrenomProf' FROM devoir d,cours c,classe a,etudiant e,professeur p,user s where c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and d.FK_ID_COURS_dv=c.ID_Cours and e.FK_ID_CLASSE=a.ID_Classe and c.FK_ID_CLASSE_crs=a.ID_Classe and s.ID_User=e.FK_ID_USER and d.EtatDv='0' and s.ID_User='$id'";
+        $result2=mysqli_query($cnx,$req2);
+        $row2=mysqli_fetch_array($result2);
+        if(empty($row2["ID_Cours"])){ ?>
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<strong>Aucun devoir !</strong> vous n'avez aucun nouveau devoir.
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+       	<?php } else{?>
+       		<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<strong>Nouveau devoir !</strong> Consulter l'onglet devoir pour l'envoyer.
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+       	<?php }?>
+       		
+       			<?php while($tab=mysqli_fetch_array($result3,MYSQLI_ASSOC)){ ?>
+       				<div class="alert alert-success" role="alert">
+			  <h4 class="alert-heading">Nouveau devoir!</h4>
+			  <h8 class="alert-heading" style="color: black">Professeur : <?php echo  $tab["NomProf"] ?> <?php echo  $tab["PrenomProf"] ?></h8></br>
+			  <h8 class="alert-heading" style="color: black">Cours : <?php echo  $tab["NomCours"] ?></h8>
+			  <hr>
+			  <strong>Sujet</strong>
+			  <p><?php echo  $tab["Sujet"] ?></p>
+			  <hr>
+			  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+				  <strong>A rendre avant le :</strong> <?php echo  $tab["DateFin"] ?> .
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				    <span aria-hidden="true">&times;</span>
+				  </button>
+				</div>
+				</div></br>
+			  <?php }?>
+			
+		
+	</div>
+	</div>
         <div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded"><!--Alert -->
 		<div class="alert alert-warning alert-dismissible fade show" role="alert">
 		  <strong>Pas de code ?</strong>  Si vous avez pas le code d'accés veuillez contacter la direction !

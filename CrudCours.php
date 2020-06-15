@@ -250,33 +250,7 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 	  background-color: #f1f1f1;
 	}	
 
-	.input-group.md-form.form-sm.form-1 input{
-		  border: 2px solid #2e2e2e;
-		  border-top-right-radius: 0.25rem;
-		  border-bottom-right-radius: 0.25rem;
-
-		  
-		}
-		.input-group.md-form.form-sm.form-2 input {
-		  border: 2px solid #2e2e2e;
-		  border-top-left-radius: 0.25rem;
-		  border-bottom-left-radius: 0.25rem;
-		  
-		}
-		
-		.input-group.md-form.form-sm.form-2 input.red-border {
-		  border: 2px solid #2e2e2e;
-		
-		}
-		.input-group.md-form.form-sm.form-2 input.lime-border {
-		  border: 2px solid #2e2e2e;
-		  
-
-		}
-		.input-group.md-form.form-sm.form-2 input.amber-border {
-		  border: 2px solid #2e2e2e;
-
-		}
+	
 
 	
 </style>
@@ -346,6 +320,9 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Crud Cours</a>
 		          </li>
 		          <li>
+		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Crud Devoir</a>
+		          </li>
+		          <li>
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
 		          </li>
 		          <li>
@@ -361,6 +338,9 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Mes Cours</a>
 		          </li>
 		          <li>
+		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Crud Devoir</a>
+		          </li>
+		          <li>
 		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Mes Fichier</a>
 		          </li>
 		          <li>
@@ -374,6 +354,9 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 		       		else if($_SESSION['role']=="Etud"){
 		       		echo '<li class="active">
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Cours</a>
+		          </li>
+		          <li>
+		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Devoir</a>
 		          </li>
 		          <li>
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
@@ -393,6 +376,7 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 
         <!-- Page Content -->
       <div id="content" class="p-4 p-md-5 pt-5">
+      	<?php if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){?>
       	<form method="POST" action="CrudCours.php" target="_self" enctype="multipart/form-data">
     		<div style="margin-right: 30%;margin-left: 30%; ">
 		<div class="input-group md-form form-sm form-2 pl-0" >
@@ -413,7 +397,7 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 		</div>
 		</div>
 		</form></br>
-      	
+      	<?php }?>
       	<div class="container">
       	<?php if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){?>
       		<?php if($_SESSION['role']=="Admin"){?>
