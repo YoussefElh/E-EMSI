@@ -243,7 +243,7 @@ else{
 		            <a href="CrudCours.php"><span class="fa fa-book mr-3"></span> Cours</a>
 		          </li>
 		          <li>
-		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3"></span> Devoir</a>
+		            <a href="CrudDevoir.php"><span class="fa fa-briefcase mr-3 "></span> Devoir</a>
 		          </li>
 		          <li>
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
@@ -295,18 +295,16 @@ else{
        		
        			<?php while($tab=mysqli_fetch_array($result3,MYSQLI_ASSOC)){ ?>
        				<div class="alert alert-success" role="alert">
-			  <h4 class="alert-heading">Nouveau devoir!</h4>
-			  <h8 class="alert-heading" style="color: black">Professeur : <?php echo  $tab["NomProf"] ?> <?php echo  $tab["PrenomProf"] ?></h8></br>
-			  <h8 class="alert-heading" style="color: black">Cours : <?php echo  $tab["NomCours"] ?></h8>
+			  
+			  
+			  <h6 class="alert-heading" style="color: black">Cours : <?php echo  $tab["NomCours"] ?></h6>
+			  <h6 class="alert-heading" style="color: black">Professeur : <?php echo  $tab["NomProf"] ?> <?php echo  $tab["PrenomProf"] ?></h6>
 			  <hr>
 			  <strong>Sujet</strong>
 			  <p><?php echo  $tab["Sujet"] ?></p>
 			  <hr>
-			  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+			  <div class="alert alert-warning" role="alert">
 				  <strong>A rendre avant le :</strong> <?php echo  $tab["DateFin"] ?> .
-				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				    <span aria-hidden="true">&times;</span>
-				  </button>
 				</div>
 				</div></br>
 			  <?php }?>

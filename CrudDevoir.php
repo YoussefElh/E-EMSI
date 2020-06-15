@@ -437,6 +437,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin" || $_SESSION['ro
 
 	            $req4="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM classe a,cours c,professeur p,user s where c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER and s.ID_User='$id' order by a.Nom";
 	            $result4=mysqli_query($cnx,$req4);
+	            
         	}
 
         	else if($_SESSION['role']=="Etud"){
@@ -457,6 +458,8 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin" || $_SESSION['ro
 	            $req3="SELECT *,a.Nom as 'NomClasse',e.Nom as 'NomEtud' FROM devoir d,cours c,classe a,etudiant e,user s where d.FK_ID_COURS_dv=c.ID_Cours and e.FK_ID_CLASSE=a.ID_Classe and c.FK_ID_CLASSE_crs=a.ID_Classe and s.ID_User=e.FK_ID_USER and d.EtatDv='0' and s.ID_User='$id' ";
 	            $result3=mysqli_query($cnx,$req3);
         	}
+
+        		
             	
             	
         
@@ -516,6 +519,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin" || $_SESSION['ro
     <?php }?>
 	<!-- #########################Prof-->
     <?php if($_SESSION['role']=="Prof"){?>
+    	
         <div class="table-wrapper-scroll-y my-custom-scrollbar" >
             <table class="table table-striped table-hover">
                 <thead>
@@ -528,7 +532,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin" || $_SESSION['ro
 						<th>Date début</th>
 						<th>Date fin</th>
 						<th>Etat</th>
-						<th>Etat action</th>
+						<th></th>
 						<th>Cours</th>
 						<th>Classe</th>
                         <th>Action</th>
@@ -539,7 +543,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin" || $_SESSION['ro
                 	<?php while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){ ?>
                     <tr>
 						<td>
-	                     <a href="#.php?ID_dv_aff=<?php echo $tab["ID_Devoir"]; ?>" class="btn btn-outline-primary">Voir</a>
+	                     <a href="?ID_dv_aff=<?php echo $tab["ID_Devoir"]; ?>" class="btn btn-outline-primary"><i class="fa fa-eye" aria-hidden="true"></i></a>
 	                     </td>
 						<td><?php echo  $tab["ID_Devoir"] ?></td>
 						<td><?php echo  $tab["Sujet"] ?></td>
@@ -548,13 +552,13 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin" || $_SESSION['ro
 						<td><?php if($tab["EtatDv"]=="0"){ ?>
 							<h5 style="color: green;">Activé</h5>
 							<td>
-	                            <a href="#.php?ID_dv_activer=<?php echo $tab["ID_Devoir"]; ?>" class="btn btn-outline-danger">Cloturer</a>
+	                             <a href="DevoirAction.php?ID_dv_clot=<?php echo $tab["ID_Devoir"]; ?>" class="btn btn-outline-dark "><i class="fa fa-lock fa-3x"></i></a>
 	                        </td>
 	                    	
 						<?php }	else if($tab["EtatDv"]=="1"){ ?>
 							<h5 style='color:red;'>Cloturé</h5>
 							<td>
-	                            <a href="#.php?ID_dv_clot=<?php echo $tab["ID_Devoir"]; ?>" class="btn btn-outline-success">Activer</a>
+	                            <a href="DevoirAction.php?ID_dv_activer=<?php echo $tab["ID_Devoir"]; ?>" class="btn btn-outline-dark "><i class="fa fa-unlock-alt fa-3x"></i></a>
 	                        </td>
 	                    <?php } ?>
 
@@ -562,13 +566,70 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin" || $_SESSION['ro
                         <td><?php echo  $tab["NomCours"] ?></td>
                         <td><?php echo  $tab["NomClasse"] ?></td>
                         <td>
-                            <a href="#.php?ID_dv=<?php echo $tab["ID_Devoir"]; ?>" class="btn btn-outline-danger">Supprimer</a>
+                            <a href="DevoirDeleteForm.php?ID_dv=<?php echo $tab["ID_Devoir"]; ?>" class="btn btn-outline-danger">Supprimer</a>
                         </td>
                     </tr>
                 <?php }?>
                 </tbody>
             </table>
         </div>
+        <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+						<h2><b style="color: white">Devoir Rendu</b></h2>
+					</div>
+                </div>
+            </div>
+        <?php
+        $result7="vide";
+        	//voir les devoir rendu par les etudiant
+        	if (isset($_GET["ID_dv_aff"])) {
+		 		$id=$_GET["ID_dv_aff"];
+	            $req7="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomEtud',p.Prenom as 'PrenomEtud' FROM filedevoir f,etudiant p,user s,cours c,devoir d,classe a where c.FK_ID_CLASSE_crs=a.ID_Classe and f.FK_ID_DEVOIR_fdv=d.ID_Devoir and d.FK_ID_COURS_dv=c.ID_Cours and p.ID_Etud=f.FK_ID_ETUDIANT_fdv and p.FK_ID_USER=s.ID_User and d.ID_Devoir='$id' ORDER by p.Nom";
+	            	$result7=mysqli_query($cnx,$req7);
+        	}?>
+        
+        <div class="table-wrapper-scroll-y my-custom-scrollbar" >
+
+            <table class="table table-striped table-hover">
+            	<?php	if($result7=="vide"){?>
+        		<div class="alert alert-danger" role="alert">
+				  <strong>Aucun fichier!</strong> Veuillez sélectionner un devoir ou cliquez sur l'oeil à côter.
+				</div>
+        <?php } ?>
+                <thead>
+                    <tr>
+                    	
+						<th>ID File</th>
+						<th>Nom etudiant</th>
+						<th>Nom Fichier</th>
+						<th>Description</th>
+						<th>Classe</th>
+						<th>Cours</th>
+                        <th>Télécharger</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                	<?php if($result7!="vide") while($tab=mysqli_fetch_array($result7,MYSQLI_ASSOC)){ ?>
+                    <tr>
+                    	
+						<td><?php echo  $tab["ID_FileDv"] ?></td>
+						<td><?php echo  $tab["NomEtud"]?> <?php echo  $tab["PrenomEtud"]?></td>
+						<td><?php echo  $tab["FileNameDv"] ?></td>
+						<td><?php echo  $tab["DescriptionDv"] ?></td>
+						<td><?php echo  $tab["NomClasse"]?></td>
+                        <td><?php echo  $tab["NomCours"]?></td>
+                        
+                        <td><a href="DownloadDevoir.php?ID_dv_tel=<?php echo $tab['ID_FileDv'] ?>" class="btn btn-outline-success">Download</a></td>
+
+                        
+                    </tr>
+                <?php }?>
+                </tbody>
+            </table>
+        </div>
+
     <?php }?>
     <!-- #########################Etud-->
     <?php if($_SESSION['role']=="Etud"){?>
