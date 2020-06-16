@@ -138,13 +138,13 @@ else{
 	      </div>
 	      <div class="modal-body">
 	      	<div class="btn bg-dark" style="color: white;"> Youssef Elhizabri</div>
-	         <a class="btn btn-social-icon btn-facebook" href="https://www.facebook.com/youssef.elhizabri" style="background-color: #3B5998;color: white;"><span class="fa fa-facebook"></span></a>
-	         <a class="btn btn-social-icon btn-linkedin" href="https://www.linkedin.com/in/youssef-elhizabri-0a846b138/" style="background-color: #007BB6;color: white;"><span class="fa fa-linkedin"></span></a>
-	         <a class="btn btn-social-icon btn-google" style="background-color: #DD4B39;color: white;"><span class="fa fa-google"> elhizabri11@gmail.Com</span></a></br></br>
+	         <a class="btn btn-social-icon" href="https://www.facebook.com/youssef.elhizabri" style="background-color: #3B5998;color: white;"><span class="fab fa-facebook-square"></span></a>
+	         <a class="btn btn-social-icon" href="https://www.linkedin.com/in/youssef-elhizabri-0a846b138/" style="background-color: #007BB6;color: white;"><span class="fab fa-linkedin"></span></a>
+	         <a class="btn btn-social-icon" style="background-color: #DD4B39;color: white;"><span class="fas fa-envelope"> elhizabri11@gmail.Com</span></a></br></br>
 	         <div class="btn bg-dark" style="color: white;"> Idriss Bacha</div>
-	         <a class="btn btn-social-icon btn-facebook" href="https://www.facebook.com/DiDis06" style="background-color: #3B5998;color: white;"><span class="fa fa-facebook"></span></a>
-	         <a class="btn btn-social-icon btn-linkedin" href="https://www.linkedin.com/in/idriss-bacha-14a272189/" style="background-color: #007BB6;color: white;"><span class="fa fa-linkedin"></span></a>
-	         <a class="btn btn-social-icon btn-google" style="background-color: #DD4B39;color: white;"><span class="fa fa-google"> idrissbacha04@gmail.com</span></a>
+	         <a class="btn btn-social-icon" href="https://www.facebook.com/DiDis06" style="background-color: #3B5998;color: white;"><span class="fab fa-facebook-square"></span></a>
+	         <a class="btn btn-social-icon" href="https://www.linkedin.com/in/idriss-bacha-14a272189/" style="background-color: #007BB6;color: white;"><span class="fab fa-linkedin"></span></a>
+	         <a class="btn btn-social-icon" style="background-color: #DD4B39;color: white;"><span class="fas fa-envelope"> idrissbacha04@gmail.com</span></a>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
