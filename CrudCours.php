@@ -383,7 +383,7 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
 			
 		  <input class="form-control my-0 py-1 lime-border" style="background-color: gray;color: white;" type="text" name="cours2" placeholder="<?php 
 		  if($_SESSION['role']=="Admin"){
-		  	echo'chercher par nom ou id du cours';
+		  	echo'chercher parl\'id du cours';
 		  }
 		  else if($_SESSION['role']=="Prof"){ 
 		  	echo'chercher par le nom du cours';
@@ -415,7 +415,7 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof" || $_SESSION['ro
             if($_SESSION['role']=="Admin"){
         	if(isset($_POST['search2'])&&!empty($_POST['cours2'])){
 				$search=$_POST['cours2'];
-				$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM cours c,professeur p,user s,classe a WHERE c.NomCours like '%$search%' or c.ID_Cours like '%$search%' and c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER GROUP by c.NomCours";
+				$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM cours c,professeur p,user s,classe a WHERE c.ID_Cours like '%$search%' and c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER";
 			}
 			else{
 				$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM cours c,professeur p,user s,classe a WHERE c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER";

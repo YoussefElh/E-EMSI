@@ -345,7 +345,7 @@ else if($_SESSION['role']=="Admin" || $_SESSION['role']=="Prof"){
       		<?php if($_SESSION['role']=="Admin"){?>
 	    	
 			<div class="alert alert-warning" role="alert">
-			   <strong>Modifier !</strong> vous pouvez pas modifier une classe vous devez supprimer et ajouter a nouveau pour evitez les conflicts.
+			   <strong>Modifier !</strong> vous ne pouvez pas modifier une classe vous devez supprimer et l'ajouter a nouveau pour evitez les conflicts.
 			</div>
 			
 			<?php }?>

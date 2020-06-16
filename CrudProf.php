@@ -333,10 +333,10 @@ else if($_SESSION['role']=="Admin"){
 
             if(isset($_POST['search'])&&!empty($_POST['prof'])){
 				$search=$_POST['prof'];
-				$req="select s.ID_User,s.Login,p.Nom,p.Prenom,p.Email from user s,professeur p where p.Nom like '%$search%' or p.Prenom like '%$search%' and s.ID_User=p.FK_ID_USER GROUP by p.Prenom";
+				$req="select s.ID_User,s.Login,p.Nom,p.Photo,p.Prenom,p.Email from user s,professeur p where p.Nom like '%$search%' or p.Prenom like '%$search%' and s.ID_User=p.FK_ID_USER GROUP by p.Prenom";
 			}
 			else{
-				 $req="select s.ID_User,s.Login,p.Nom,p.Prenom,p.Email from user s,professeur p where s.ID_User=p.FK_ID_USER";
+				 $req="select s.ID_User,s.Login,p.Nom,p.Photo,p.Prenom,p.Email from user s,professeur p where s.ID_User=p.FK_ID_USER";
 				}
             $result=mysqli_query($cnx,$req);
         
@@ -382,9 +382,7 @@ else if($_SESSION['role']=="Admin"){
                 <tbody >
                 	<?php while($tab=mysqli_fetch_array($result,MYSQLI_ASSOC)){ ?>
                     <tr>
-						<td>
-							
-						</td>
+					<th scope="row"><img style="height: 40px;" src="img-profile\<?php $photo=$tab["Photo"]; echo "$photo"?>"></th>
 						<td><?php echo  $tab["ID_User"] ?></td>
 						<td><?php echo  $tab["Login"] ?></td>
                         <td><?php echo  $tab["Nom"] ?> <?php echo  $tab["Prenom"] ?></td>

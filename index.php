@@ -17,6 +17,7 @@ else{
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">	
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 	<link rel="stylesheet" href="css/styleMenu.css">
 	<style type="text/css">
 		.input-group.md-form.form-sm.form-1 input{
@@ -91,6 +92,14 @@ else{
 				height:300px;
 				overflow: auto;
 				}
+		.my-custom-scrollbar {
+		position: relative;
+		height: 200px;
+		overflow: auto;
+		}
+		.table-wrapper-scroll-y {
+		display: block;
+		}
 		
 	</style>
 	<!-- header -->
@@ -192,10 +201,10 @@ else{
           <?php if($_SESSION['role']=="Admin"){
 			echo '
 		          <li>
-		            <a href="CrudProf.php"><span class="fa fa-address-book-o mr-3"></span> Crud Professeur</a>
+		            <a href="CrudProf.php"><span class="fas fa-chalkboard-teacher mr-3"></span> Crud Professeur</a>
 		          </li>
 		          <li>
-		            <a href="CrudEtud.php"><span class="fa fa-address-book-o mr-3"></span> Crud Etudiant</a>
+		            <a href="CrudEtud.php"><span class="fas fa-user-graduate mr-3"></span> Crud Etudiant</a>
 		          </li>
 		          <li>
 		            <a href="CrudFiles.php"><span class="fa fa-files-o mr-3"></span> Crud Fichier</a>
@@ -249,7 +258,7 @@ else{
 		            <a href="Profile.php"><span class="fa fa-cog mr-3"></span> Paramètres</a>
 		          </li>
 		          <li>
-		            <a href="logout.php"><span class="fa fa-sign-out mr-3"></span> Sign Out</a>
+		            <a href="logout.php"><span class="fas fa-sign-out-alt mr-3"></span> Sign Out</a>
 		          </li>
 		        </ul>';
 		       			}
@@ -308,6 +317,8 @@ else{
 				</div>
 				</div></br>
 			  <?php }?>
+
+
 			
 		
 	</div>
@@ -395,9 +406,244 @@ else{
 				
 			</div>
 		</div>
-
+		
 <?php }?>
-      </div> 
+<!--##############Admin-->
+	<?php if($_SESSION['role']=="Admin"){ ?>
+		<?php
+			$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+			//etudiant
+            $req1="select count(*) as 'nbrEtud' from etudiant";
+            $result1=mysqli_query($cnx,$req1);
+            $row1=mysqli_fetch_array($result1);
+            //prof
+            $req2="select count(*) as 'nbrProf' from professeur";
+            $result2=mysqli_query($cnx,$req2);
+            $row2=mysqli_fetch_array($result2);
+            //classe
+            $req3="select count(*) as 'nbrClasse' from classe";
+            $result3=mysqli_query($cnx,$req3);
+            $row3=mysqli_fetch_array($result3);
+            //file
+            $req4="select count(*) as 'nbrFile' from file f,filedevoir d";
+            $result4=mysqli_query($cnx,$req4);
+            $row4=mysqli_fetch_array($result4);
+            //devoir
+            $req5="select count(*) as 'nbrDevoir' from devoir";
+            $result5=mysqli_query($cnx,$req5);
+            $row5=mysqli_fetch_array($result5);
+            //cours
+            $req6="select count(*) as 'nbrCours' from cours";
+            $result6=mysqli_query($cnx,$req6);
+            $row6=mysqli_fetch_array($result6);
+
+            // 5 etudiant
+            $req7="SELECT *,c.Nom as 'NomClasse',e.Nom as 'NomEtud' FROM etudiant e,classe c where e.FK_ID_CLASSE=c.ID_Classe ORDER by ID_Etud desc LIMIT 5";
+            $result7=mysqli_query($cnx,$req7);
+            
+
+		?>
+		<div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded">
+			<div class="list-group">
+			  <button type="button" class="list-group-item list-group-item-action active">
+			    5 derniers nouveaux étudiants sur e-emsi
+			  </button>
+			  </div>
+			  <div class="table-wrapper-scroll-y my-custom-scrollbar" >
+			  <table class="table">
+			  <thead>
+			    <tr>
+			      <th scope="col"></th>
+			      <th scope="col">Nom</th>
+			      <th scope="col">Prenom</th>
+			      <th scope="col">Classe</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  	<?php while($tab=mysqli_fetch_array($result7,MYSQLI_ASSOC)){ ?>
+			    <tr>
+			  
+			      <th scope="row"><img style="height: 40px;" src="img-profile\<?php $photo=$tab["Photo"]; echo "$photo"?>"></th>
+			      <td><?php echo $tab["NomEtud"]; ?></td>
+			      <td><?php echo $tab["Prenom"]; ?></td>
+			      <td><?php echo $tab["NomClasse"]; ?></td>
+			  
+			    </tr>
+			    <?php }?>
+			  </tbody>
+			</table>
+			</div>
+		</div> 
+		<div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded">
+			<div class="card-deck">
+		  <div class="card text-white mb-3" style="max-width: 22rem;background-color: #00ccff; ">
+		    <i class="	fas fa-user-graduate fa-3x"  style="color: #005266;" aria-hidden="true"></i>
+		    <div class="card-body">
+		      <h5 class="card-title">Etudiant</h5>
+		      <p class="card-text"><h4 style="color: white"><?php echo $row1['nbrEtud']?> étudiant</h4></p>
+		      <p class="card-text"></p>
+		    </div>
+		    
+		  </div>
+		  <div class="card text-white  mb-3" style="max-width: 22rem; background-color: #ffcc99;">
+		    <i class="fas fa-chalkboard-teacher fa-3x" style="color: #ff8000;"></i>
+		    <div class="card-body">
+		      <h5 class="card-title">Professeur</h5>
+		      <p class="card-text"><h4 style="color: white"><?php echo $row2['nbrProf']?> professeur</h4></p>
+		    </div>
+		    
+		  </div>
+		  <div class="card text-white  mb-3" style="max-width: 22rem; background-color: #99e699;">
+		    	<i class="fas fa-book-open fa-3x" style="color: #29a329;"></i>
+		    <div class="card-body">
+		      <h5 class="card-title">Classe</h5>
+		      <p class="card-text"><h4 style="color: white"><?php echo $row3['nbrClasse']?> classe</h4></p>
+		    </div>
+		    
+		  </div>
+		</div>
+		</div> 
+		   <div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded">
+			<div class="card-deck">
+		  <div class="card text-white mb-3" style="max-width: 22rem;background-color: #e6e600; ">
+		    <i class="	fas fa-file-archive fa-3x"  style="color: #808000;" aria-hidden="true"></i>
+		    <div class="card-body">
+		      <h5 class="card-title">Fichier</h5>
+		      <p class="card-text"><h4 style="color: white"><?php echo $row4['nbrFile']?> fichier</h4></p>
+		    </div>
+		    
+		  </div>
+		  <div class="card text-white  mb-3" style="max-width: 22rem; background-color: #ff99ff;">
+		    <i class="fas fa-briefcase fa-3x" style="color: #cc00cc;"></i>
+		    <div class="card-body">
+		      <h5 class="card-title">Devoir</h5>
+		      <p class="card-text"><h4 style="color: white"><?php echo $row5['nbrDevoir']?> devoir</h4></p>
+		    </div>
+		    
+		  </div>
+		  <div class="card text-white  mb-3" style="max-width: 22rem; background-color: #dfbf9f;">
+		    	<i class="	fas fa-chalkboard fa-3x" style="color: #996633;"></i>
+		    <div class="card-body">
+		      <h5 class="card-title">Cours</h5>
+		      <p class="card-text"><h4 style="color: white"><?php echo $row6['nbrCours']?> cours</h4></p>
+		    </div>
+		    
+		  </div>
+		</div>
+		   </div> 
+   <?php }?> 
+
+   <!--##############Admin-->
+	<?php if($_SESSION['role']=="Prof"){ ?>
+		<?php
+			$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
+			$id=$_SESSION['idu'];
+			//etudiant
+            $req1="select count(*) as 'nbrEtud' from etudiant";
+            $result1=mysqli_query($cnx,$req1);
+            $row1=mysqli_fetch_array($result1);
+            //prof
+            $req2="select count(*) as 'nbrProf' from professeur";
+            $result2=mysqli_query($cnx,$req2);
+            $row2=mysqli_fetch_array($result2);
+            //classe
+            $req3="select count(*) as 'mesClasse' from user s,professeur e,classe c,cours r where r.FK_ID_CLASSE_crs=c.ID_Classe and r.FK_ID_PROF_crs=e.ID_Prof and s.ID_User=e.FK_ID_USER and s.ID_User='$id'";
+            $result3=mysqli_query($cnx,$req3);
+            $row3=mysqli_fetch_array($result3);
+            //file
+            $req4="SELECT count(*) as 'nbrFile' FROM file f,professeur p,user s,cours c,classe a where c.FK_ID_CLASSE_crs=a.ID_Classe and f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
+            $result4=mysqli_query($cnx,$req4);
+            $row4=mysqli_fetch_array($result4);
+            //devoir
+            $req5="SELECT count(*) as 'nbrDevoir' from devoir d,classe a,cours c,professeur p,user s where d.FK_ID_COURS_dv=c.ID_Cours and d.FK_ID_CLASSE_dv=a.ID_Classe and d.FK_ID_PROF_dv=p.ID_Prof and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
+            $result5=mysqli_query($cnx,$req5);
+            $row5=mysqli_fetch_array($result5);
+            //cours
+            $req6="SELECT count(*) as 'mesCours' FROM cours c,professeur p,user s,classe a WHERE c.FK_ID_CLASSE_crs=a.ID_Classe and c.FK_ID_PROF_crs=p.ID_Prof and s.ID_User=p.FK_ID_USER and s.ID_User='$id'";
+            $result6=mysqli_query($cnx,$req6);
+            $row6=mysqli_fetch_array($result6);
+
+            // 5 etudiant
+            $req7="SELECT *,a.Nom as 'NomClasse',e.Nom as 'NomEtud',e.Prenom as 'PrenomEtud' FROM filedevoir f,etudiant e,user s,cours c,devoir d,classe a,professeur p where c.FK_ID_CLASSE_crs=a.ID_Classe and f.FK_ID_DEVOIR_fdv=d.ID_Devoir and d.FK_ID_COURS_dv=c.ID_Cours and e.ID_Etud=f.FK_ID_ETUDIANT_fdv and d.FK_ID_PROF_dv=p.ID_Prof and p.FK_ID_USER=s.ID_User and s.ID_User='$id' ORDER by d.ID_Devoir desc LIMIT 5";
+            $result7=mysqli_query($cnx,$req7);
+            
+
+		?>
+		
+		<div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded">
+			<div class="card-deck">
+		 
+		  <div class="card text-white  mb-3" style="max-width: 22rem; background-color: #99e699;">
+		    	<i class="fas fa-book-open fa-3x" style="color: #29a329;"></i>
+		    <div class="card-body">
+		      <h5 class="card-title">Mes classes</h5>
+		      <p class="card-text"><h4 style="color: white"><?php echo $row3['mesClasse']?> Classe</h4></p>
+		    </div>
+		    
+		  </div>
+		   <div class="card text-white  mb-3" style="max-width: 22rem; background-color: #dfbf9f;">
+			    	<i class="	fas fa-chalkboard fa-3x" style="color: #996633;"></i>
+			    <div class="card-body">
+			      <h5 class="card-title">Mes cours</h5>
+			      <p class="card-text"><h4 style="color: white"><?php echo $row6['mesCours']?> Cours</h4></p>
+			    </div>
+			    
+			  </div>
+		
+			  <div class="card text-white mb-3" style="max-width: 22rem;background-color: #e6e600; ">
+			    <i class="	fas fa-file-archive fa-3x"  style="color: #808000;" aria-hidden="true"></i>
+			    <div class="card-body">
+			      <h5 class="card-title">Mes fichiers</h5>
+			      <p class="card-text"><h4 style="color: white"><?php echo $row4['nbrFile']?> Fichier</h4></p>
+			    </div>
+			    
+			  </div>
+			  <div class="card text-white  mb-3" style="max-width: 22rem; background-color: #ff99ff;">
+			    <i class="fas fa-briefcase fa-3x" style="color: #cc00cc;"></i>
+			    <div class="card-body">
+			      <h5 class="card-title">Mes devoirs</h5>
+			      <p class="card-text"><h4 style="color: white"><?php echo $row5['nbrDevoir']?> Devoir</h4></p>
+			    </div>
+			    
+			  </div>
+			 
+			</div>
+		   </div>
+		   <div class="container p-3 my-3 bg-secondary  shadow-lg p-3 mb-5 bg-white rounded">
+			<div class="list-group">
+			  <button type="button" class="list-group-item list-group-item-action active">
+			    5 Dernier devoir rendu
+			  </button>
+			  </div>
+			  <div class="table-wrapper-scroll-y my-custom-scrollbar" >
+			  <table class="table">
+			  <thead>
+			    <tr>
+			      <th scope="col"></th>
+			      <th scope="col">Nom</th>
+			      <th scope="col">Prenom</th>
+			      <th scope="col">Cours</th>
+			      <th scope="col">Classe</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  	<?php while($tab=mysqli_fetch_array($result7,MYSQLI_ASSOC)){ ?>
+			    <tr>
+			  
+			      <th scope="row"><img style="height: 40px;" src="img-profile\<?php $photo=$tab["Photo"]; echo "$photo"?>"></th>
+			      <td><?php echo $tab["NomEtud"]; ?></td>
+			      <td><?php echo $tab["Prenom"]; ?></td>
+			      <td><?php echo $tab["NomCours"]; ?></td>
+			      <td><?php echo $tab["NomClasse"]; ?></td>
+			  
+			    </tr>
+			    <?php }?>
+			  </tbody>
+			</table>
+			</div>
+		</div>  
+   <?php }?> 
+    </div> 
 </div>
 
     

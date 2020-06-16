@@ -383,7 +383,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin" || $_SESSION['ro
 			
 		  <input class="form-control my-0 py-1 lime-border" style="background-color: gray;color: white;" type="text" name="file" placeholder="<?php 
 		  if($_SESSION['role']=="Admin"){
-		  	echo'chercher par le prénom d\'etudiant ou par id du fichier';
+		  	echo'chercher par id du fichier';
 		  }
 		  else if($_SESSION['role']=="Prof"){ 
 		  	echo'chercher par id du devoir';
@@ -410,9 +410,9 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin" || $_SESSION['ro
             	//recherche
             	if(isset($_POST['search'])&&!empty($_POST['file'])){
 				$search=$_POST['file'];
-				$req="SELECT * FROM filedevoir f,etudiant p where p.Prenom like '%$search%' or f.ID_FileDv like '%$search%' and p.ID_Etud=f.FK_ID_ETUDIANT_fdv GROUP by p.Prenom";
+				$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomEtud',p.Prenom as 'PrenomEtud' FROM filedevoir f,etudiant p,user s,cours c,devoir d,classe a where c.FK_ID_CLASSE_crs=a.ID_Classe and f.FK_ID_DEVOIR_fdv=d.ID_Devoir and d.FK_ID_COURS_dv=c.ID_Cours and p.ID_Etud=f.FK_ID_ETUDIANT_fdv and p.FK_ID_USER=s.ID_User and f.ID_FileDv like '%$search%'";
 				}else{
-					$req="SELECT * FROM filedevoir f,etudiant p where p.ID_Etud=f.FK_ID_ETUDIANT_fdv GROUP by p.Prenom";
+					$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomEtud',p.Prenom as 'PrenomEtud' FROM filedevoir f,etudiant p,user s,cours c,devoir d,classe a where c.FK_ID_CLASSE_crs=a.ID_Classe and f.FK_ID_DEVOIR_fdv=d.ID_Devoir and d.FK_ID_COURS_dv=c.ID_Cours and p.ID_Etud=f.FK_ID_ETUDIANT_fdv and p.FK_ID_USER=s.ID_User";
 				}
 	            $result=mysqli_query($cnx,$req);
         	}
@@ -496,6 +496,8 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin" || $_SESSION['ro
 						<th>Télécharger</th>
 						<th>Description</th>
                         <th>Uploader</th>
+                        <th>Cours</th>
+                        <th>Classe</th>
                         <th>Action</th>
                         
                     </tr>
@@ -507,7 +509,9 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin" || $_SESSION['ro
 						<td><?php echo  $tab["FileNameDv"] ?></td>
 						<td><a href="DownloadDevoir.php?ID_dv_tel=<?php echo $tab['ID_FileDv'] ?>" class="btn btn-outline-success">Download</a></td>
                         <td><?php echo  $tab["DescriptionDv"] ?></td>
-                        <td><?php echo  $tab["Nom"]?> <?php echo $tab["Prenom"];?></td>
+                        <td><?php echo  $tab["NomEtud"]?> <?php echo $tab["Prenom"];?></td>
+                        <td><?php echo  $tab["NomCours"] ?></td>
+                        <td><?php echo  $tab["NomClasse"] ?></td>
                         <td>
                             <a href="DevoirFileDelete.php?ID_dv_del=<?php echo $tab["ID_FileDv"]; ?>" class="btn btn-outline-danger">Supprimer</a>
                         </td>

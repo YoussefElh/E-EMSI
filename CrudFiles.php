@@ -383,7 +383,7 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 			
 		  <input class="form-control my-0 py-1 lime-border" style="background-color: gray;color: white;" type="text" name="file" placeholder="<?php 
 		  if($_SESSION['role']=="Admin"){
-		  	echo'chercher par le prénom du prof ou par id du fichier';
+		  	echo'chercher par id du fichier';
 		  }
 		  else if($_SESSION['role']=="Prof"){ 
 		  	echo'chercher par id du fichier';
@@ -405,9 +405,9 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
             	//recherche
             	if(isset($_POST['search'])&&!empty($_POST['file'])){
 				$search=$_POST['file'];
-				$req="SELECT * FROM file f,professeur p where p.Prenom like '%$search%' or f.ID_File like '%$search%' and p.ID_Prof=f.FK_ID_PROF GROUP by p.Prenom";
+				$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM file f,professeur p,user s,cours c,classe a where f.ID_File like '%$search%' and c.FK_ID_CLASSE_crs=a.ID_Classe and f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User";
 				}else{
-					$req="SELECT * FROM file f,professeur p where p.ID_Prof=f.FK_ID_PROF";
+					$req="SELECT *,a.Nom as 'NomClasse',p.Nom as 'NomProf' FROM file f,professeur p,user s,cours c,classe a where c.FK_ID_CLASSE_crs=a.ID_Classe and f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User";
 				}
 	            $result=mysqli_query($cnx,$req);
         	}
@@ -418,10 +418,10 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
         	$cnx=mysqli_connect("127.0.0.1","root","","eemsi");
             	if(isset($_POST['search'])&&!empty($_POST['file'])){
 				$search=$_POST['file'];
-				$req="SELECT * FROM file f,professeur p,user s,cours c where f.ID_File like '%$search%' and f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
+				$req="SELECT *,a.Nom as 'NomClasse' FROM file f,professeur p,user s,cours c,classe a where f.ID_File like '%$search%' and c.FK_ID_CLASSE_crs=a.ID_Classe and f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
 			}
 				else{
-					$req="SELECT * FROM file f,professeur p,user s,cours c where f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
+					$req="SELECT *,a.Nom as 'NomClasse' FROM file f,professeur p,user s,cours c,classe a where c.FK_ID_CLASSE_crs=a.ID_Classe and f.FK_ID_COURS=c.ID_Cours and p.ID_Prof=f.FK_ID_PROF and p.FK_ID_USER=s.ID_User and s.ID_User='$id'";
 				}
 	            $result=mysqli_query($cnx,$req);
 
@@ -462,8 +462,10 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 						<th>Nom Fichier</th>
 						<th>Télécharger</th>
 						<th>Description</th>
+						<th>Classe</th>
 						<?php if($_SESSION['role']=="Prof"){
                         echo '<th>Cours</th>';
+
                         } ?>
                         <?php if($_SESSION['role']=="Admin"){
                         echo '<th>Uploader</th>';
@@ -482,13 +484,14 @@ else if($_SESSION['role']=="Prof" || $_SESSION['role']=="Admin"){
 						<td><?php echo  $tab["FileName"] ?></td>
 						<td><a href="DownloadFileForm.php?IDF=<?php echo $tab['ID_File'] ?>" class="btn btn-outline-success">Download</a></td>
                         <td><?php echo  $tab["Description"] ?></td>
+                        <td><?php echo  $tab["NomClasse"] ?></td>
                         <?php if($_SESSION['role']=="Prof"){?>
                         <td><?php echo  $tab["NomCours"] ?></td>
                         <?php } ?>
                         
                         <?php if($_SESSION['role']=="Admin"){?> 
                         <?php echo'<td>'?>
-                        	<?php echo  $tab["Nom"]?> <?php echo $tab["Prenom"];?>
+                        	<?php echo  $tab["NomProf"]?> <?php echo $tab["Prenom"];?>
                         <?php echo'</td>'?>
                         <?php }?>
                         <td>

@@ -30,9 +30,18 @@
 
     <!-- Main css -->
     <link rel="stylesheet" href="css/stylereg.css">
+    <style type="text/css">
+    	
+    	.two{
+    		background-attachment: fixed;
+		  background-color: #34ADFF;
+		  background-image: -webkit-linear-gradient(150deg, #41a6ff 35%, #4CBFFF 35%);
+		  min-height: 300px;
+		}
+    </style>
 <!--===============================================================================================-->
 </head>
-<body>
+<body class="two">
 	
 	<section class="sign-in" style="margin-top: 5%">
             <div class="container">
